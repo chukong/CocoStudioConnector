@@ -82,46 +82,46 @@ bool HelloWorld::init()
 		this->addChild(scene,2);
     }
     sendEvent(TRIGGEREVENT_INITSCENE);
-    this->schedule(schedule_selector(SceneEditorTestLayer::gameLogic));
+    this->schedule(schedule_selector(HelloWorld::gameLogic));
     this->setTouchEnabled(true);
     this->setTouchMode(kCCTouchesOneByOne);
     return true;
 }
 
-void SceneEditorTestLayer::onEnter()
+void HelloWorld::onEnter()
 {
 	CCLayer::onEnter();
 	sendEvent(TRIGGEREVENT_ENTERSCENE);
 }
 
-void SceneEditorTestLayer::onExit()
+void HelloWorld::onExit()
 {
 	CCLayer::onExit();
 	sendEvent(TRIGGEREVENT_LEAVESCENE);
 }
 
-bool SceneEditorTestLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
+bool HelloWorld::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
 	sendEvent(TRIGGEREVENT_TOUCHBEGAN);
 	return true;
 }
 
-void SceneEditorTestLayer::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
+void HelloWorld::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 {
 	sendEvent(TRIGGEREVENT_TOUCHMOVED);
 }
 
-void SceneEditorTestLayer::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
+void HelloWorld::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 {
 	sendEvent(TRIGGEREVENT_TOUCHENDED);
 }
 
-void SceneEditorTestLayer::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
+void HelloWorld::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
 {
 	sendEvent(TRIGGEREVENT_TOUCHCANCELLED);
 }
 
-void SceneEditorTestLayer::gameLogic(float dt)
+void HelloWorld::gameLogic(float dt)
 {
     sendEvent(TRIGGEREVENT_UPDATESCENE);
 }
