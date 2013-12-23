@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".CocoViewer" >
+
+    <ImageButton
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="#e0000000"
+        android:src="@drawable/close" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300dp"
+        android:layout_height="25dp"
+        android:layout_alignTop="@+id/exit"
+        android:layout_centerHorizontal="true"
+        android:max="100"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/render"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/reset"
+        android:layout_alignLeft="@+id/reset"
+        android:layout_marginBottom="35dp"
+        android:text="Render" />
+
+    <TextView
+        android:id="@+id/viewerstate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:text="Press Connect to Start"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/connectstate"
+        android:layout_marginBottom="34dp"
+        android:layout_toLeftOf="@+id/exit"
+        android:text="Reset" />
+
+    <ImageView
+        android:id="@+id/connectstate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/disconnect" />
+
+    <Button
+        android:id="@+id/input"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/reset"
+        android:layout_alignBottom="@+id/reset"
+        android:layout_alignLeft="@+id/connect"
+        android:text="Input IP" />
+
+    <Button
+        android:id="@+id/connect"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/render"
+        android:layout_alignBottom="@+id/render"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="40dp"
+        android:text="Connect" />
+
+</RelativeLayout>
