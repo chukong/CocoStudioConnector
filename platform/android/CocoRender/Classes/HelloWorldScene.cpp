@@ -77,7 +77,7 @@ bool HelloWorld::init()
 		std::vector<std::string> searchPaths = CCFileUtils::sharedFileUtils()->getSearchPaths();
 		searchPaths.insert(searchPaths.begin(), path);
 		CCFileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
-
+		cocos2d::extension::SceneReader::sharedSceneReader()->setTarget(this, callfuncOD_selector(HelloWorld::comCallBack));
 		Render* scene = new Render(FileInfo::sharedFileInfo()->getFilename());
 		this->addChild(scene,2);
     }
@@ -86,6 +86,32 @@ bool HelloWorld::init()
     this->setTouchEnabled(true);
     this->setTouchMode(kCCTouchesOneByOne);
     return true;
+}
+
+void HelloWorld::comCallBack(cocos2d::CCObject *tar, void *dict)
+{
+	if (dict == NULL || tar == NULL)
+	{
+		return;
+	}
+	CCArmature *pAr = dynamic_cast<CCArmature*>(tar);
+	if (pAr == NULL)
+	{
+		return;
+	}
+	rapidjson::Value *v = (rapidjson::Value *)dict;
+    bool isShowColliderRect = DICTOOL->getBooleanValue_json(*v, "isShowColliderRect");
+	if (isShowColliderRect == false)
+	{
+		return;
+	}
+	
+	ColliderRectDrawer *drawer = ColliderRectDrawer::create(pAr);
+	if (pAr->getParent())
+	{
+		pAr->getParent()->addChild(drawer);
+	}
+	drawer->setVisible(true);
 }
 
 void HelloWorld::onEnter()

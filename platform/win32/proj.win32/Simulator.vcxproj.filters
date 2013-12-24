@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
+      <Filter>class</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tinyxml\tinystr.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tinyxml\tinyxml.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tinyxml\tinyxmlerror.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\tinyxml\tinyxmlparser.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ReadJSHelper.cpp">
+      <Filter>class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ColliderRectDrawer.cpp">
+      <Filter>class</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\trigger\acts.cpp">
+      <Filter>tigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\trigger\cons.cpp">
+      <Filter>tigger</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HelloWorldScene.h">
+      <Filter>class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppMacros.h">
+      <Filter>class</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tinyxml\tinystr.h">
+      <Filter>xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\tinyxml\tinyxml.h">
+      <Filter>xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ColliderRectDrawer.h">
+      <Filter>class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ReadJSHelper.h">
+      <Filter>class</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\trigger\acts.h">
+      <Filter>tigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\trigger\cons.h">
+      <Filter>tigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\trigger\EventDef.h">
+      <Filter>tigger</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="class">
+      <UniqueIdentifier>{b0ab5f00-5c8f-4b8f-b2ae-ce32a11cf807}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="xml">
+      <UniqueIdentifier>{c8d81094-b4f4-406a-ab25-976b55aaa51f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tigger">
+      <UniqueIdentifier>{dd082886-fc1e-4984-94d4-d2dd7792f9c9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
