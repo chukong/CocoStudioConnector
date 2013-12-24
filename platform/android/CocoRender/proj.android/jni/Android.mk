@@ -12,8 +12,8 @@ LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/FileInfo.cpp \
                    ../../Classes/Render.cpp \
                    ../../Classes/CocosTool.cpp \
-                   ../../Classes/TriggerCode/acts.cpp \
-		   ../../Classes/TriggerCode/cons.cpp
+                   ../../Classes/trigger/acts.cpp \
+		           ../../Classes/trigger/cons.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 
