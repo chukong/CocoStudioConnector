@@ -129,7 +129,11 @@ public class CocoViewer extends Activity
 		    		else if(state.equals("Error"))
 		    		{
 		    			String log = intent.getStringExtra("log");
-		    			if(log.equals("Task Cancle")) ConnectService.sendTaskCancleMsg();
+		    			if(log.equals("Task Cancle")) 
+		    			{
+		    				ConnectService.sendTaskCancleMsg();
+		    				ProgressNotice("0",false);
+		    			}
 		    			Notice(log);
 		    			setButtonEnable(true);
 		    		}
