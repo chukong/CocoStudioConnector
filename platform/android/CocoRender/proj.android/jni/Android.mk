@@ -9,6 +9,7 @@ LOCAL_MODULE_FILENAME := libcocos2dcpp
 LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/AppDelegate.cpp \
                    ../../Classes/HelloWorldScene.cpp \
+                   ../../Classes/ColliderRectDrawer.cpp \
                    ../../Classes/FileInfo.cpp \
                    ../../Classes/Render.cpp \
                    ../../Classes/CocosTool.cpp \

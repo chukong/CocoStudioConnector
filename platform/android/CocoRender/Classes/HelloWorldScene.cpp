@@ -3,7 +3,8 @@
 #include "HelloWorldScene.h"
 #include "Render.h"
 #include "FileInfo.h"
-#include "TriggerCode/EventDef.h"
+#include "trigger/EventDef.h"
+#include "ColliderRectDrawer.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include <jni.h>
@@ -56,11 +57,6 @@ bool HelloWorld::init()
 	pCloseItem->setPosition(ccp(origin.x + visibleSize.width - pCloseItem->getContentSize().width,
                                 origin.y + pCloseItem->getContentSize().height));
     
-    // create menu, it's an autorelease object
-    CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
-    pMenu->setPosition(CCPointZero);
-    this->addChild(pMenu, 3);
-    
     std::string path = std::string(FileInfo::sharedFileInfo()->getSavePath());
     if(path.empty())
     {
@@ -85,6 +81,10 @@ bool HelloWorld::init()
     this->schedule(schedule_selector(HelloWorld::gameLogic));
     this->setTouchEnabled(true);
     this->setTouchMode(kCCTouchesOneByOne);
+    // create menu, it's an autorelease object
+    CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
+    pMenu->setPosition(CCPointZero);
+    this->addChild(pMenu, 9999);
     return true;
 }
 

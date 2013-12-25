@@ -54,7 +54,7 @@ void SceneRender::initSceneLayer(const char* filename)
     // create menu, it's an autorelease object
     CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
     pMenu->setPosition(CCPointZero);
-    this->addChild(pMenu, 1);
+    this->addChild(pMenu, 9999);
 
 	CCLayer* pLayer = CCLayer::create();
 	this->addChild(pLayer);
