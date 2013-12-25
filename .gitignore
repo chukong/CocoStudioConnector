@@ -11,3 +11,8 @@
 *.lai
 *.la
 
+platform/ios/proj.ios/CCSPreviewer.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+platform/ios/proj.ios/CCSPreviewer.xcodeproj/project.xcworkspace/xcshareddata/CCSPreviewer.xccheckout
+platform/ios/proj.ios/CCSPreviewer.xcodeproj/project.xcworkspace/xcuserdata/pipu.xcuserdatad/UserInterfaceState.xcuserstate
+platform/ios/proj.ios/CCSPreviewer.xcodeproj/xcuserdata/pipu.xcuserdatad/xcschemes/CCSPreviewer.xcscheme
+platform/ios/proj.ios/CCSPreviewer.xcodeproj/xcuserdata/pipu.xcuserdatad/xcschemes/xcschememanagement.plist
