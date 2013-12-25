@@ -17,6 +17,9 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		37CC7462186A708500D7DEBF /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37CC7461186A708500D7DEBF /* libzbar.a */; };
+		37CC7465186A70A000D7DEBF /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37CC7463186A70A000D7DEBF /* libcurl.a */; };
+		37CC7466186A70A000D7DEBF /* libwebp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37CC7464186A70A000D7DEBF /* libwebp.a */; };
 		380BB60F1850817D00A79FAA /* x_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 380BB60E1850817D00A79FAA /* x_alt.png */; };
 		380BB611185081E200A79FAA /* x_alt_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 380BB610185081E200A79FAA /* x_alt_pressed.png */; };
 		3817F279184F13F60070C1A4 /* green_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 3817F278184F13F60070C1A4 /* green_edit.png */; };
@@ -244,9 +247,6 @@
 		3821542F186935D500402788 /* libwebsockets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38215419186935D400402788 /* libwebsockets.a */; };
 		382154371869364B00402788 /* AssetsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 382154351869364B00402788 /* AssetsManager.cpp */; };
 		3821543B1869619500402788 /* libcocos2dx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 382148141869311200402788 /* libcocos2dx.a */; };
-		3821543D186962B800402788 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3821543C186962B800402788 /* libzbar.a */; };
-		38215440186962DF00402788 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3821543E186962DF00402788 /* libcurl.a */; };
-		38215441186962DF00402788 /* libwebp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3821543F186962DF00402788 /* libwebp.a */; };
 		38C74C8B184C54F1006BE4B5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38C74C8A184C54F1006BE4B5 /* CFNetwork.framework */; };
 		38C74CAE184C5859006BE4B5 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C74CAD184C5859006BE4B5 /* AsyncSocket.m */; };
 		41070EA61839419C002486F8 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 41070EA51839419C002486F8 /* Default-Landscape@2x~ipad.png */; };
@@ -340,6 +340,9 @@
 		1D6058910D05DD3D006BFB54 /* CCSPreviewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CCSPreviewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		37CC7461186A708500D7DEBF /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzbar.a; path = ../ZBarSDK/libzbar.a; sourceTree = SOURCE_ROOT; };
+		37CC7463186A70A000D7DEBF /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = "../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries/libcurl.a"; sourceTree = SOURCE_ROOT; };
+		37CC7464186A70A000D7DEBF /* libwebp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebp.a; path = "../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries/libwebp.a"; sourceTree = SOURCE_ROOT; };
 		380BB60E1850817D00A79FAA /* x_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_alt.png; sourceTree = "<group>"; };
 		380BB610185081E200A79FAA /* x_alt_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_alt_pressed.png; sourceTree = "<group>"; };
 		3817F278184F13F60070C1A4 /* green_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_edit.png; sourceTree = "<group>"; };
@@ -819,9 +822,6 @@
 		38215419186935D400402788 /* libwebsockets.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwebsockets.a; sourceTree = "<group>"; };
 		382154351869364B00402788 /* AssetsManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AssetsManager.cpp; sourceTree = "<group>"; };
 		382154361869364B00402788 /* AssetsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetsManager.h; sourceTree = "<group>"; };
-		3821543C186962B800402788 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzbar.a; path = ../ZBarSDK/libzbar.a; sourceTree = "<group>"; };
-		3821543E186962DF00402788 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = "../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries/libcurl.a"; sourceTree = "<group>"; };
-		3821543F186962DF00402788 /* libwebp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebp.a; path = "../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries/libwebp.a"; sourceTree = "<group>"; };
 		38C74C8A184C54F1006BE4B5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		38C74CAC184C5859006BE4B5 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
 		38C74CAD184C5859006BE4B5 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
@@ -931,11 +931,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3821543B1869619500402788 /* libcocos2dx.a in Frameworks */,
-				38215441186962DF00402788 /* libwebp.a in Frameworks */,
+				37CC7466186A70A000D7DEBF /* libwebp.a in Frameworks */,
 				38C74C8B184C54F1006BE4B5 /* CFNetwork.framework in Frameworks */,
-				3821543D186962B800402788 /* libzbar.a in Frameworks */,
+				37CC7462186A708500D7DEBF /* libzbar.a in Frameworks */,
 				3821542F186935D500402788 /* libwebsockets.a in Frameworks */,
-				38215440186962DF00402788 /* libcurl.a in Frameworks */,
+				37CC7465186A70A000D7DEBF /* libcurl.a in Frameworks */,
 				419B21B61834743300C388F4 /* libpthread.dylib in Frameworks */,
 				418DE0C218215A50005DD52B /* CoreMedia.framework in Frameworks */,
 				418DE0C018215A4A005DD52B /* CoreVideo.framework in Frameworks */,
@@ -1028,9 +1028,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3821543E186962DF00402788 /* libcurl.a */,
-				3821543F186962DF00402788 /* libwebp.a */,
-				3821543C186962B800402788 /* libzbar.a */,
+				37CC7463186A70A000D7DEBF /* libcurl.a */,
+				37CC7464186A70A000D7DEBF /* libwebp.a */,
+				37CC7461186A708500D7DEBF /* libzbar.a */,
 				38C74C8A184C54F1006BE4B5 /* CFNetwork.framework */,
 				419B21B51834743300C388F4 /* libpthread.dylib */,
 				41ADBF391833235A002A8064 /* libcopyfile.dylib */,
@@ -2582,10 +2582,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/system",
 					"$(SRCROOT)/../../../cocos2d-x/external/libwebsockets/ios/lib",
-					"\\\"$(SRCROOT)/../ZBarSDK\\\"",
-					"\\\"$(SRCROOT)/../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\\\"",
+					"\\\\\\\\\\\\\\\"$(SRCROOT)/../ZBarSDK\\\\\\\\\\\\\\\"",
+					"\\\\\\\\\\\\\\\"$(SRCROOT)/../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\\\\\\\\\\\\\\\"",
 					/Users/pipu/Downloads/Connector/CocoStudioConnector/platform/ios/ZBarSDK,
 					"/Users/pipu/Downloads/Connector/CocoStudioConnector/cocos2d-x/cocos2dx/platform/third_party/ios/libraries",
+					"/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/cocos2d-x/cocos2dx/platform/third_party/ios/libraries",
+					/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/platform/ios/proj.ios,
+					/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/platform/ios/ZBarSDK,
 				);
 				OTHER_CFLAGS = "-O2";
 				PRODUCT_NAME = CCSPreviewer;
@@ -2636,10 +2639,13 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/system",
 					"$(SRCROOT)/../../../cocos2d-x/external/libwebsockets/ios/lib",
-					"\\\"$(SRCROOT)/../ZBarSDK\\\"",
-					"\\\"$(SRCROOT)/../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\\\"",
+					"\\\\\\\\\\\\\\\"$(SRCROOT)/../ZBarSDK\\\\\\\\\\\\\\\"",
+					"\\\\\\\\\\\\\\\"$(SRCROOT)/../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\\\\\\\\\\\\\\\"",
 					/Users/pipu/Downloads/Connector/CocoStudioConnector/platform/ios/ZBarSDK,
 					"/Users/pipu/Downloads/Connector/CocoStudioConnector/cocos2d-x/cocos2dx/platform/third_party/ios/libraries",
+					"/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/cocos2d-x/cocos2dx/platform/third_party/ios/libraries",
+					/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/platform/ios/proj.ios,
+					/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/platform/ios/ZBarSDK,
 				);
 				PRODUCT_NAME = CCSPreviewer;
 				PROVISIONING_PROFILE = "";

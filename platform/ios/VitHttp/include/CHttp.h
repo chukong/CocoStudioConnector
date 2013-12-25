@@ -1,11 +1,4 @@
 
-//
-//  CHttp.h  Windows
-//  CCHttpRequestExample
-//
-//  Created by 李光日 on 12-8-3.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-//
 
 #ifndef CCHttpRequestExample_CHttp_h
 #define CCHttpRequestExample_CHttp_h
