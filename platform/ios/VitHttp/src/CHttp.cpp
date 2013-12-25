@@ -1,20 +1,9 @@
-//
-//  CHttp.c
-//  CCHttpRequestExample
-//
-//  Created by 李光日 on 12-8-3.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
-//
-
-
 #include "CHttp.h"
 #include <queue>
 #include <stdlib.h>
 
 #include <signal.h>
 #include <unistd.h>
-//#include <cocos2d.h>
-
 
 
 
