@@ -4,8 +4,10 @@
 #include "SceneHelper.h"
 #include "SimpleAudioEngine.h"
 #include "VitConnect.h"
-
 #include "ZBarInterface.h"
+#include "CocoStudio/Trigger/TriggerBase.h"
+#include "trigger/EventDef.h"
+#include "ColliderRectDrawer.h"
 
 using namespace cocos2d;
 using namespace cocos2d::extension;
@@ -17,8 +19,6 @@ SceneRender::SceneRender(const char* filename)
 	if (strcmp(filename, "") == 0)
 	{
 		return;
-//		name = CCString::create("Fishjoy2.json");
-//		initSceneLayer("Fishjoy2.json");
 	}
 	else
 	{
@@ -36,7 +36,6 @@ SceneRender::~SceneRender(void)
 void SceneRender::initSceneLayer(const char* filename)
 {
     CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
-    CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
@@ -50,7 +49,7 @@ void SceneRender::initSceneLayer(const char* filename)
                                                           menu_selector(SceneRender::menuCloseCallback));
 
 	pCloseItem->setPosition(ccp(visibleSize.width - 70 , 50));
-	pCloseItem->setScale(2.0);
+//	pCloseItem->setScale(2.0);
 
     // create menu, it's an autorelease object
     CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
@@ -63,20 +62,34 @@ void SceneRender::initSceneLayer(const char* filename)
 	pScene = SceneReader::sharedSceneReader()->createNodeWithSceneFile(filename);
 	pLayer->addChild(pScene);
 	aa = ActionManager::shareManager()->playActionByName("startMenu_1.json", "Animation1");
+    
+    sendEvent(TRIGGEREVENT_INITSCENE);
+	this->schedule(schedule_selector(SceneRender::gameLogic));
+	this->setTouchEnabled(true);
+	this->setTouchMode(kCCTouchesOneByOne);
 }
 
 void SceneRender::menuCloseCallback(CCObject* pSender)
 {
-    ZBarInterface::sharedZBarInterface()->DisRender();
-    
-    SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
     /* pipu */
-    sceneHelper->setHelloWorld(SceneHelper::sharedSceneHelper()->getHelloWorld());
+    ZBarInterface::sharedZBarInterface()->DisRender();
+    /**/
+    
+//    CCDirector::sharedDirector()->popScene();
+    SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+	sceneHelper->setTouchRender(false);
+    /* pipu */
+    // refactoring
+//    sceneHelper->setHelloWorld(SceneHelper::sharedSceneHelper()->getHelloWorld());
+    //
     sceneHelper->setNowRunning(HELLOWORLD);
     /**/
-//	CCDirector::sharedDirector()->popScene();
-	sceneHelper->setTouchRender(false);
-	CCDirector::sharedDirector()->replaceScene(sceneHelper->getHelloWorld());
+    /* refactoring */
+    sceneHelper->setHelloWorldState(NORMAL);
+    CCDirector::sharedDirector()->replaceScene(HelloWorld::scene());
+    // before
+//	CCDirector::sharedDirector()->replaceScene(sceneHelper->getHelloWorld());
+    /**/
 }
 void SceneRender::onEnter()
 {
@@ -91,6 +104,7 @@ void SceneRender::onEnter()
 	{
 		pCloseItem->setPosition(ccp(visibleSize.width - 70 , 50));
 	}
+    sendEvent(TRIGGEREVENT_ENTERSCENE);
 }
 void SceneRender::onExit()
 {
@@ -98,13 +112,61 @@ void SceneRender::onExit()
 	{
 		aa->stop();
 	}
-//	CC_SAFE_RELEASE(pScene);
-//	cocos2d::extension::CCArmatureDataManager::purge();
-//    cocos2d::extension::SceneReader::sharedSceneReader()->purgeSceneReader();
-//    UIHelper::purgeUIHelper();
-//	cocos2d::extension::ActionManager::shareManager()->purgeActionManager();
-//	pScene->removeFromParentAndCleanup(true);
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseAllEffects();
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
 	CCLayer::onExit();
+    sendEvent(TRIGGEREVENT_LEAVESCENE);
+}
+
+
+bool SceneRender::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
+{
+	sendEvent(TRIGGEREVENT_TOUCHBEGAN);
+	return true;
+}
+
+void SceneRender::comCallBack(cocos2d::CCObject *tar, void *dict)
+{
+	if (dict == NULL || tar == NULL)
+	{
+		return;
+	}
+	CCArmature *pAr = dynamic_cast<CCArmature*>(tar);
+	if (pAr == NULL)
+	{
+		return;
+	}
+	rapidjson::Value *v = (rapidjson::Value *)dict;
+    bool isShowColliderRect = DICTOOL->getBooleanValue_json(*v, "isShowColliderRect");
+	if (isShowColliderRect == false)
+	{
+		return;
+	}
+	
+	ColliderRectDrawer *drawer = ColliderRectDrawer::create(pAr);
+	if (pAr->getParent())
+	{
+		pAr->getParent()->addChild(drawer);
+	}
+	drawer->setVisible(true);
+}
+
+void SceneRender::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
+{
+	sendEvent(TRIGGEREVENT_TOUCHMOVED);
+}
+
+void SceneRender::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
+{
+	sendEvent(TRIGGEREVENT_TOUCHENDED);
+}
+
+void SceneRender::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
+{
+	sendEvent(TRIGGEREVENT_TOUCHCANCELLED);
+}
+
+void SceneRender::gameLogic(float dt)
+{
+	sendEvent(TRIGGEREVENT_UPDATESCENE);
 }

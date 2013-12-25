@@ -1,10 +1,4 @@
-//
-//  FileInfo.cpp
-//  CCSPreviewer
-//
-//  Created by Solo on 13-10-28.
-//
-//
+
 
 #include "FileInfo.h"
 

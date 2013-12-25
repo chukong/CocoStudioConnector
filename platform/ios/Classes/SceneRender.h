@@ -8,13 +8,22 @@ class SceneRender : public cocos2d::CCLayer
 public:
 	SceneRender(const char* filename);
 	~SceneRender();
-//	CREATE_FUNC(SceneRender)
 
 	void menuCloseCallback(CCObject* pSender);
 	
-	
     virtual void onEnter();
     virtual void onExit();
+    // CallBack
+	void comCallBack(cocos2d::CCObject *tar, void *dict);
+
+	// default implements are used to call script callback if exist
+	virtual bool ccTouchBegan(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent);
+	virtual void ccTouchMoved(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent);
+	virtual void ccTouchEnded(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent);
+	virtual void ccTouchCancelled(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent);
+
+	// gameLogic
+	void gameLogic(float dt);
 private:
 	void initSceneLayer(const char* filename);
 	cocos2d::CCString* name;
@@ -22,4 +31,4 @@ private:
 	cocos2d::CCMenuItemImage *pCloseItem;
 };
 
-#endif __SCENE_RENDER_H__
+#endif

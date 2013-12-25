@@ -1,10 +1,4 @@
-//
-//  ControlUI.cpp
-//  CCSPreviewer
-//
-//  Created by jiang xiaohua on 13-11-1.
-//
-//
+
 
 #include "ControlUI.h"
 #include "cocos-ext.h"
@@ -27,8 +21,9 @@ ControlUI::~ControlUI()
 }
 bool ControlUI::init()
 {
-	
-    CCSize size = CCDirector::sharedDirector()->getVisibleSize();
+    CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();
+    CCSize size = pEGLView->getFrameSize();
+//    CCSize size = CCDirector::sharedDirector()->getVisibleSize();
     
     m_GUILayer = UILayer::create();
     
@@ -159,12 +154,14 @@ bool ControlUI::init()
     m_pIP_layout->addChild(m_pIP_Remove_button);
     
     m_pConnect_image = UIImageView::create();
+    m_pConnect_image->setVisible(false);
     m_pConnect_image->loadTexture("connectsuccessful.png");
     CCSize status_connect_size = m_pConnect_image->getSize();
     m_pConnect_image->setPosition(ccp(status_connect_size.width / 2, status_connect_size.height / 2));
     m_GUILayer->addWidget(m_pConnect_image);
     
     m_pDisconnect_image = UIImageView::create();
+    m_pDisconnect_image->setVisible(true);
     m_pDisconnect_image->loadTexture("disconnect.png");
     CCSize status_disconnect_size = m_pDisconnect_image->getSize();
     m_pDisconnect_image->setPosition(ccp(status_disconnect_size.width / 2, status_disconnect_size.height / 2));
@@ -176,7 +173,7 @@ bool ControlUI::init()
     pCloseButton->loadTextures("CloseNormal.png","CloseNormal.png","CloseSelected.png");
     pCloseButton->setPosition(ccp(size.width - 70,50));
     pCloseButton->addTouchEventListener(this,toucheventselector(ControlUI::menuCloseCallback));
-    pCloseButton->setScale(2.0);
+//    pCloseButton->setScale(2.0);
 	pCloseButton->setFontSize(18);
     m_GUILayer->addWidget(pCloseButton);
 	
@@ -321,27 +318,42 @@ void ControlUI::pick(CCObject* sender, cocos2d::extension::TouchEventType type)
 {
 	if(type == TOUCH_EVENT_ENDED)
 	{
+        /* refactoring */
+        if (SceneHelper::sharedSceneHelper()->getDownLoadState() == DOWNLOADING)
+        {
+            return;
+        }
+        // before
+        /*
 		if (SceneHelper::sharedSceneHelper()->isDownloading())
 		{
 			return;
 		}
+         */
+        /**/
         /* pipu */
-//        int result = ZBarInterface::sharedZBarInterface()->CreateConnect("192.168.22.195", 3407);
+//        int result = ZBarInterface::sharedZBarInterface()->CreateConnect("192.168.22.195", 6094);
 //        CCLOG("result = %d", result);
         ZBarInterface::sharedZBarInterface()->pick();
-        // before
-//		ZBarInterface::sharedZBarInterface()->pick();
-        /**/
 //		ZBarInterface::sharedZBarInterface()->DownLoadZip("http://192.168.22.179:1195/Package.zip", "version", "FightScene.json", "960", "640");
 	}
 }
 
 void ControlUI::Clean(CCObject* sender, cocos2d::extension::TouchEventType type)
 {
-	if(SceneHelper::sharedSceneHelper()->isDownloading())
-	{
-		return;
-	}
+	/* refactoring */
+    if (SceneHelper::sharedSceneHelper()->getDownLoadState() == DOWNLOADING)
+    {
+        return;
+    }
+    // before
+    /*
+     if (SceneHelper::sharedSceneHelper()->isDownloading())
+     {
+     return;
+     }
+     */
+    /**/
 	if(type == TOUCH_EVENT_ENDED)
 	{
 //		SceneHelper::sharedSceneHelper()->cleanResources();
@@ -361,12 +373,23 @@ void ControlUI::Clean(CCObject* sender, cocos2d::extension::TouchEventType type)
 /* pipu */
 void ControlUI::ipEvent(CCObject *sender, TouchEventType type)
 {
-    if(SceneHelper::sharedSceneHelper()->isDownloading())
-	{
-		return;
-	}
     if (type == TOUCH_EVENT_ENDED)
     {
+        /* refactoring */
+        SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+        if (sceneHelper->getDownLoadState() == DOWNLOADING)
+        {
+            return;
+        }
+        // before
+        /*
+         if (SceneHelper::sharedSceneHelper()->isDownloading())
+         {
+         return;
+         }
+         */
+        /**/
+        
         m_pIP_layout->setVisible(!m_pIP_layout->isVisible());
         CCObject* obj = NULL;
         CCARRAY_FOREACH(m_pIP_layout->getChildren(), obj)
@@ -374,6 +397,8 @@ void ControlUI::ipEvent(CCObject *sender, TouchEventType type)
             UIWidget* widget = static_cast<UIWidget*>(obj);
             widget->setTouchEnabled(true);
         }
+        
+        m_pIP_editbox->setText(ZBarInterface::sharedZBarInterface()->getIP());
         
         m_pConnectButton->setTouchEnabled(false);
         m_pConnectButton->setBright(false);
@@ -383,6 +408,10 @@ void ControlUI::ipEvent(CCObject *sender, TouchEventType type)
         m_pRenderButton->setBright(false);
         m_pIP_button->setTouchEnabled(false);
         m_pIP_button->setBright(false);
+        
+        /* refactoring */
+        sceneHelper->setHelloWorldState(INPUT_IP);
+        /**/
     }
 }
 
@@ -405,15 +434,25 @@ void ControlUI::okEvent(CCObject *sender, TouchEventType type)
         m_pRenderButton->setTouchEnabled(true);
         m_pRenderButton->setBright(true);
         m_pIP_button->setTouchEnabled(true);
-        m_pIP_button->setBright(true);                
+        m_pIP_button->setBright(true);
+        
+        /* refactoring */
+        SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+        sceneHelper->setHelloWorldState(NORMAL);
+        /**/
         
         // "192.168.203.93"
         // 48173
+        ZBarInterface* zbar = ZBarInterface::sharedZBarInterface();
         std::string value = m_pIP_editbox->getText();
         
-        if (strcmp(value.c_str(), ZBarInterface::sharedZBarInterface()->getIP()) != 0)
+        if (strcmp(value.c_str(), zbar->getIP()) != 0)
         {
-            ZBarInterface::sharedZBarInterface()->DisConnect();
+            if (zbar->isConnected())
+            {
+                zbar->DisConnect();
+                SceneHelper::sharedSceneHelper()->setSocketState(SOCKET_DISCONNECT);
+            }
         }
         
         int colonIndex = value.find_last_of(":");
@@ -433,6 +472,11 @@ void ControlUI::cancelEvent(CCObject *sender, TouchEventType type)
     if (type == TOUCH_EVENT_ENDED)
     {
         m_pIP_layout->setVisible(false);
+        
+        /* refactoring */
+        SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+        sceneHelper->setHelloWorldState(NORMAL);
+        /**/
     }
 }
 

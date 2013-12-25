@@ -59,12 +59,17 @@ bool HelloWorld::init()
 	
 	m_pGUI = ControlUI::create();
 	addChild(m_pGUI);
+    
+    SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+    sceneHelper->setHelloWorldState(NORMAL);
 
     return true;
 }
 void HelloWorld::update(float delta)
 {
 	
+    /* refactoring */
+    /*
 	CHttp * htp = CHttp::getSingletonPtr();
 	
 	Http_Lock(htp->m_errorHttpLock);
@@ -85,12 +90,173 @@ void HelloWorld::update(float delta)
 			htp->addDownloadRequest(FileInfo::sharedFileInfo()->getURL(),"down",NULL);
 		}
 	}
-	
-    /* pipu */
-    m_pGUI->getConnectImage()->setVisible(ZBarInterface::sharedZBarInterface()->isConnected());
-    m_pGUI->getDisconnectImage()->setVisible(!ZBarInterface::sharedZBarInterface()->isConnected());    
+     */
     /**/
-
+    
+    /* refactoring */
+    SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();    
+    
+    switch (sceneHelper->getHelloWorldState())
+    {
+        case INPUT_IP:
+        {
+            m_pGUI->disableConnectButton();
+            m_pGUI->disableRenderButton();
+            m_pGUI->disableResetButton();
+            m_pGUI->disableIPButton();
+        }
+            break;                    
+            
+        default:
+        {
+            m_pGUI->setLoadingBarVisible(false);
+            m_pGUI->enableConnectButton();
+            m_pGUI->enableResetButton();
+            m_pGUI->enableRenderButton();
+            m_pGUI->enableIPButton();
+            
+            if(!SceneHelper::sharedSceneHelper()->isHaveResources())
+            {
+                m_pGUI->disableRenderButton();
+            }
+        }
+            break;
+    }
+    
+    
+    switch (sceneHelper->getSocketState())
+    {
+        case SOCKET_SERVER_IS_DOWN:
+        {
+            ZBarInterface* zbar = ZBarInterface::sharedZBarInterface();
+            zbar->DisConnect();
+            SceneHelper::sharedSceneHelper()->setSocketState(SOCKET_DISCONNECT);            
+            m_pGUI->setTitle("Server is down, connect server agian");
+        }
+            break;
+            
+        case SOCKET_DISCONNECT:
+        {
+            sceneHelper->setSocketState(SOCKET_NONE);
+            m_pGUI->getConnectImage()->setVisible(false);
+            m_pGUI->getDisconnectImage()->setVisible(true);
+        }
+            break;
+            
+        case SOCKET_CONNECT:
+        {
+            m_pGUI->getConnectImage()->setVisible(true);
+            m_pGUI->getDisconnectImage()->setVisible(false);
+            
+            switch (sceneHelper->getDownLoadState())
+            {
+                case HTTP_SERVER_IS_DOWN:
+                {
+                    sceneHelper->setDownLoadState(DOWNLOAD_NONE);
+                    
+                    char temp[512];memset(temp, 0x00, sizeof(temp));
+                    if (SceneHelper::sharedSceneHelper()->getErrorType() == 28)
+                    {
+                        sprintf(temp," TimeOut，Maybe disconnect！Errotype: %d",SceneHelper::sharedSceneHelper()->getErrorType());
+                    }
+                    else if(SceneHelper::sharedSceneHelper()->getErrorType() == 10000)
+                    {
+                        sprintf(temp,"Have not resources!");
+                    }
+                    else
+                    {
+                        sprintf(temp,"Action: %s; Info: %s; Errotype: %d", SceneHelper::sharedSceneHelper()->getAction(), SceneHelper::sharedSceneHelper()->getInfo(),
+                                SceneHelper::sharedSceneHelper()->getErrorType());
+                    }
+                    m_pGUI->setTitle(temp);
+                }
+                    break;
+                    
+                case WAIT_DOWNLOAD_START:
+                {
+                    m_pGUI->setDownLoadTextVisible(true);
+                    m_pGUI->setTitle("Waiting for pushing down start of scene editor");
+                }
+                    break;
+                    
+                case DOWNLOADING:
+                {                                        
+                    m_pGUI->setLoadingBarVisible(true);
+                    m_pGUI->setProgress(SceneHelper::sharedSceneHelper()->getDownLoadByte());
+                    m_pGUI->disableConnectButton();
+                    m_pGUI->disableRenderButton();
+                    m_pGUI->disableResetButton();
+                    m_pGUI->disableIPButton();
+                }
+                    break;
+                    
+                case DOWNLOADED_FINISHED:
+                {
+                    sceneHelper->setDownLoadState(DOWNLOADED_UNCOMPRESS);
+                    
+                    m_pGUI->setTitle("Uncompressing");
+                    sceneHelper->setHaveResources(true);
+                    
+                    m_pGUI->disableConnectButton();
+                    m_pGUI->disableRenderButton();
+                    m_pGUI->disableResetButton();
+                    m_pGUI->disableIPButton();
+                }
+                    break;
+                    
+                case DOWNLOADED_UNCOMPRESS:
+                {
+                    sceneHelper->setDownLoadState(DOWNLOAD_NONE);
+                    
+                    m_pGUI->setTitle("Connect server or render if app can render");
+                    m_pGUI->disableConnectButton();
+                    m_pGUI->disableRenderButton();
+                    m_pGUI->disableResetButton();
+                    m_pGUI->disableIPButton();
+                    
+                    uncompress();
+                    sceneHelper->saveSerchPath();
+                    sceneHelper->saveConfig();
+                    if (strcmp(FileInfo::sharedFileInfo()->getFilename(), "") == 0)
+                    {
+                        std::string str = "ProjectName Error!";
+                        m_pGUI->setTitle(str.c_str());
+//                        char temp[128];memset(temp, 0x00, sizeof(temp));
+//                        sprintf(temp, "Have not resources!" );
+//                        SceneHelper::sharedSceneHelper()->setLastError("", "", 10000, 0);
+//                        SceneHelper::sharedSceneHelper()->setPrint(true);
+                        return;
+                    }
+                    sceneHelper->setDownLoadByte(0);
+                    sceneHelper->setNowRunning(RENDER);
+                    SceneRender* pScene = new SceneRender(FileInfo::sharedFileInfo()->getFilename());
+                    CCDirector::sharedDirector()->replaceScene((CCScene*)pScene);
+                }
+                    break;
+                    
+                case DOWNLOAD_STOP:
+                {
+                    sceneHelper->setDownLoadState(WAIT_DOWNLOAD_START);
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+    /**/
+	
+    /*
+    // pipu //
+    m_pGUI->getConnectImage()->setVisible(ZBarInterface::sharedZBarInterface()->isConnected());
+    m_pGUI->getDisconnectImage()->setVisible(!ZBarInterface::sharedZBarInterface()->isConnected());
+    //
+    
 	if (SceneHelper::sharedSceneHelper()->isDownLoadFinished())
 	{
 //		CCDirector::sharedDirector()->
@@ -120,17 +286,17 @@ void HelloWorld::update(float delta)
 	}
 	else if(SceneHelper::sharedSceneHelper()->isDownloading())
 	{
-        /* pipu */
+        // pipu //
         m_pGUI->setIP(ZBarInterface::sharedZBarInterface()->getIP());
         m_pGUI->setLoadingBarVisible(true);
-        /**/
+        //
 		m_pGUI->setProgress(SceneHelper::sharedSceneHelper()->getDownLoadByte());
-        /* pipu */
+        // pipu //
         m_pGUI->disableConnectButton();
         m_pGUI->disableRenderButton();
         m_pGUI->disableResetButton();
         m_pGUI->disableIPButton();
-        /**/
+        //
 	}
     //=== pipu ===//
     else if (SceneHelper::sharedSceneHelper()->isWaitDownLoadStart())
@@ -155,7 +321,7 @@ void HelloWorld::update(float delta)
     }
     else
     {
-        /* pipu */
+        // pipu //
         if (!m_pGUI->isInputLayoutVisible())
         {
             m_pGUI->setTitle("Connect server or render if app can render");
@@ -165,7 +331,7 @@ void HelloWorld::update(float delta)
             m_pGUI->enableRenderButton();
             m_pGUI->enableIPButton();
         }
-        /**/
+        //
     }
 	if(SceneHelper::sharedSceneHelper()->getPrint())
 	{
@@ -192,7 +358,7 @@ void HelloWorld::update(float delta)
 	
 	if(SceneHelper::sharedSceneHelper()->isHaveResources())
 	{
-        /* pipu */
+        // pipu
         if (!m_pGUI->isInputLayoutVisible()
             && !SceneHelper::sharedSceneHelper()->isDownloading())
         {
@@ -200,12 +366,13 @@ void HelloWorld::update(float delta)
         }
         // before
 //        m_pGUI->enableRenderButton();
-        /**/
+        //
 	}
 	else
 	{
 		m_pGUI->disableRenderButton();
 	}
+     */
 }
 void HelloWorld::onEnter()
 {
@@ -217,7 +384,7 @@ void HelloWorld::onEnter()
 	scheduleUpdate();
     
     /* pipu */
-    m_pGUI->setTitle("Push down connect button to connect server");
+    m_pGUI->setTitle("Connect server or render if app can render");
     m_pGUI->setLoadingBarPercent(0);
     m_pGUI->enableConnectButton();
     m_pGUI->enableResetButton();
@@ -281,7 +448,7 @@ void HelloWorld::Render(CCObject* sender, cocos2d::extension::TouchEventType typ
 		SceneHelper::sharedSceneHelper()->setTouchRender(true);
 		SceneRender* pScene = new SceneRender(FileInfo::sharedFileInfo()->getFilename());
 		unscheduleAllSelectors();
-		CCDirector::sharedDirector()->pushScene((CCScene*)pScene);
+        CCDirector::sharedDirector()->replaceScene((CCScene*)pScene);
 		SceneHelper::sharedSceneHelper()->setNowRunning(RENDER);
 	}
 }
