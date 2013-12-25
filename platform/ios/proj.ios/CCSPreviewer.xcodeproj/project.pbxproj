@@ -2582,13 +2582,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/system",
 					"$(SRCROOT)/../../../cocos2d-x/external/libwebsockets/ios/lib",
-					"\\\\\\\\\\\\\\\"$(SRCROOT)/../ZBarSDK\\\\\\\\\\\\\\\"",
-					"\\\\\\\\\\\\\\\"$(SRCROOT)/../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\\\\\\\\\\\\\\\"",
-					/Users/pipu/Downloads/Connector/CocoStudioConnector/platform/ios/ZBarSDK,
-					"/Users/pipu/Downloads/Connector/CocoStudioConnector/cocos2d-x/cocos2dx/platform/third_party/ios/libraries",
-					"/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/cocos2d-x/cocos2dx/platform/third_party/ios/libraries",
-					/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/platform/ios/proj.ios,
-					/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/platform/ios/ZBarSDK,
+					"\"$(SRCROOT)/../ZBarSDK\"",
+					"\"$(SRCROOT)/../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\"",
 				);
 				OTHER_CFLAGS = "-O2";
 				PRODUCT_NAME = CCSPreviewer;
@@ -2639,13 +2634,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/system",
 					"$(SRCROOT)/../../../cocos2d-x/external/libwebsockets/ios/lib",
-					"\\\\\\\\\\\\\\\"$(SRCROOT)/../ZBarSDK\\\\\\\\\\\\\\\"",
-					"\\\\\\\\\\\\\\\"$(SRCROOT)/../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\\\\\\\\\\\\\\\"",
-					/Users/pipu/Downloads/Connector/CocoStudioConnector/platform/ios/ZBarSDK,
-					"/Users/pipu/Downloads/Connector/CocoStudioConnector/cocos2d-x/cocos2dx/platform/third_party/ios/libraries",
-					"/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/cocos2d-x/cocos2dx/platform/third_party/ios/libraries",
-					/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/platform/ios/proj.ios,
-					/Users/zhangcheng/Downloads/Connector/CocoStudioConnector/platform/ios/ZBarSDK,
+					"\"$(SRCROOT)/../ZBarSDK\"",
+					"\"$(SRCROOT)/../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\"",
 				);
 				PRODUCT_NAME = CCSPreviewer;
 				PROVISIONING_PROFILE = "";
