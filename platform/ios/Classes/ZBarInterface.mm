@@ -1,10 +1,4 @@
-//
-//  ZBarInterface.cpp
-//  CCSPreviewer
-//
-//  Created by jiang xiaohua on 13-10-30.
-//
-//
+
 
 #include "ZBarInterface.h"
 #import "ZBarViewController.h"
@@ -111,6 +105,10 @@ static ZBarInterfaceIOS* _sharedInstance = nil;
 {
     NSLog(@"connectServer");
     
+    /* refactoring */
+    SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+    /**/
+    
     if (client == nil)
     {
         client = [[AsyncSocket alloc] initWithDelegate:self];
@@ -131,20 +129,31 @@ static ZBarInterfaceIOS* _sharedInstance = nil;
             
             client = nil;
             
-            SceneHelper::sharedSceneHelper()->setLoginEnabled(false);
+            /* refactoring */
+            sceneHelper->setSocketState(SOCKET_NONE);
+            sceneHelper->setLoginEnabled(false);
+            // before
+            /*
             SceneHelper::sharedSceneHelper()->setWaitDownLoadStart(false);
+             */
+            /**/
             
             return SRV_CONNECT_FAIL;
         }
         else
         {
-//            [client setDelegate:self];
+            sceneHelper->setSocketState(SOCKET_CONNECT);
             NSLog(@"Connect to u!");
             return SRV_CONNECT_SUC;
         }
     }
     else
     {
+        sceneHelper->setSocketState(SOCKET_CONNECT);
+        if (sceneHelper->getDownLoadState() == DOWNLOAD_NONE)
+        {
+            sceneHelper->setDownLoadState(WAIT_DOWNLOAD_START);
+        }
         [client readDataWithTimeout:-1 tag:0];
         return SRV_CONNECTED;
     }
@@ -239,20 +248,6 @@ static ZBarInterfaceIOS* _sharedInstance = nil;
 
 #pragma mark socket delegate
 
-- (void)onSocket:(AsyncSocket *)sock didAcceptNewSocket:(AsyncSocket *)newSocket
-{
-    NSLog(@"didAcceptNewSocket");
-}
-
-- (NSTimeInterval)onSocket:(AsyncSocket *)sock
-  shouldTimeoutReadWithTag:(long)tag
-                   elapsed:(NSTimeInterval)elapsed
-                 bytesDone:(NSUInteger)length
-{
-    NSLog(@"shouldTimeoutReadWithTag");
-    return elapsed;
-}
-
 - (void)onSocket:(AsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port
 {
     [client readDataWithTimeout:-1 tag:0];
@@ -261,15 +256,16 @@ static ZBarInterfaceIOS* _sharedInstance = nil;
 - (void)onSocket:(AsyncSocket *)sock willDisconnectWithError:(NSError *)err
 {
     NSLog(@"Error");
-    SceneHelper::sharedSceneHelper()->setLoginEnabled(false);
-    SceneHelper::sharedSceneHelper()->setWaitDownLoadStart(false);
+    
+    SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+    sceneHelper->setLoginEnabled(false);
+    /* refactoring */
+//    SceneHelper::sharedSceneHelper()->setWaitDownLoadStart(false);
+    /**/
 }
 
 - (void)onSocketDidDisconnect:(AsyncSocket *)sock
 {
-    SceneHelper::sharedSceneHelper()->setLoginEnabled(false);
-    SceneHelper::sharedSceneHelper()->setWaitDownLoadStart(false);
-    
     /*
     NSString *msg = @"Sorry this connect is failure";
     [self showMessage:msg];
@@ -290,10 +286,19 @@ static ZBarInterfaceIOS* _sharedInstance = nil;
             ZBarInterface::sharedZBarInterface()->setAppEnterBackground(false);
         }
         
+        /* refactoring */
+        if (SceneHelper::sharedSceneHelper()->getDownLoadState() == DOWNLOADING)
+        {
+            ZBarInterface::sharedZBarInterface()->setReConnectWithAppEnterForeground(true);
+        }
+        // before
+        /*
         if (SceneHelper::sharedSceneHelper()->isDownloading())
         {
             ZBarInterface::sharedZBarInterface()->setReConnectWithAppEnterForeground(true);
         }
+         */
+        /**/
         
         std::string value = ZBarInterface::sharedZBarInterface()->getIP();
         int colonIndex = value.find_last_of(":");
@@ -307,6 +312,12 @@ static ZBarInterfaceIOS* _sharedInstance = nil;
         NSString* msg = @"Sorry this connect is failure";
         [self showMessage:msg];
         [msg release];
+        
+        if (SceneHelper::sharedSceneHelper()->getDownLoadState() == DOWNLOADING)
+        {
+            ZBarInterface::sharedZBarInterface()->stopDownLoad();
+        }
+        SceneHelper::sharedSceneHelper()->setSocketState(SOCKET_SERVER_IS_DOWN);
     }
 }
 
@@ -339,18 +350,31 @@ static ZBarInterfaceIOS* _sharedInstance = nil;
     NSLog(@"title = %@", title);
     if ([title isEqualToString:@"LOGINOK"])
     {
-        SceneHelper::sharedSceneHelper()->setLoginEnabled(true);
-        SceneHelper::sharedSceneHelper()->setWaitDownLoadStart(true);
+        SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+        sceneHelper->setLoginEnabled(true);
+        /* refactoring */
+        if (sceneHelper->getDownLoadState() == DOWNLOAD_NONE)
+        {
+            sceneHelper->setDownLoadState(WAIT_DOWNLOAD_START);
+        }
+        // before
+//        SceneHelper::sharedSceneHelper()->setWaitDownLoadStart(true);
+        /**/
     }
     else if ([title isEqualToString:@"STOP"])
     {
-        if (SceneHelper::sharedSceneHelper()->isDownloading()) // during downloaing
+        /* refactoring */
+        if (SceneHelper::sharedSceneHelper()->getDownLoadState() == DOWNLOADING)
+        // before
+//        if (SceneHelper::sharedSceneHelper()->isDownloading()) // during downloaing
+        /**/
         {
             ZBarInterface::sharedZBarInterface()->stopDownLoad();
             NSLog(@"stop during downloading");
         }
         else // in Scene
         {
+            SceneHelper::sharedSceneHelper()->setNowRunning(HELLOWORLD);
             cocos2d::CCDirector::sharedDirector()->replaceScene(HelloWorld::scene());
         }
     }
@@ -362,15 +386,21 @@ static ZBarInterfaceIOS* _sharedInstance = nil;
     {
         SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
         
+        /* pipu */
         if (sceneHelper->getNowRunning() == RENDER)
         {
             sceneHelper->setTouchRender(false);
-            sceneHelper->setHelloWorld(SceneHelper::sharedSceneHelper()->getHelloWorld());
+            /* refactoring */
+//            sceneHelper->setHelloWorld(SceneHelper::sharedSceneHelper()->getHelloWorld());
+            /**/
+            sceneHelper->setHelloWorldState(NORMAL);
             sceneHelper->setNowRunning(HELLOWORLD);
-            cocos2d::CCDirector::sharedDirector()->replaceScene(sceneHelper->getHelloWorld());
+            cocos2d::CCDirector::sharedDirector()->replaceScene(HelloWorld::scene());
         }
-        
-        sceneHelper->setWaitDownLoadStart(false);
+        /**/
+        /* refactoring */
+//        sceneHelper->setWaitDownLoadStart(false);
+        /**/
         [self downLoadZip:content];
     }
     
@@ -385,24 +415,15 @@ using namespace cocos2d;
 
 void	error_cb(const char* action,const char* info,int errortype,int repose )
 {
-    /*
-    for (int i = CURLE_OK; i < CURL_LAST; ++i)
-    {
-        if (errortype == i)
-        {
-            CCLOG("action = %s", action);
-            CCLOG("info = %s", info);
-            CCLOG("repose = %d", repose);
-            CCLOG("i = %d", i);
-            break;
-        }
-    }
-     */
-    
 	if(errortype == 7)
 	{
-		SceneHelper::sharedSceneHelper()->setLastError(action, info, errortype, repose);
-		SceneHelper::sharedSceneHelper()->setPrint(true);
+        SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+        sceneHelper->setLastError(action, info, errortype, repose);
+        /* refactoring */
+        sceneHelper->setDownLoadState(HTTP_SERVER_IS_DOWN);
+        // before
+//		SceneHelper::sharedSceneHelper()->setPrint(true);
+        /**/
 	}
     else if (errortype == 2000)
     {
@@ -417,7 +438,11 @@ void	error_cb(const char* action,const char* info,int errortype,int repose )
         http->setDownLoadRequestCount(http->getDownLoadRequestCount() + 1);
         if (http->getDownLoadRequestCount() == 2)
         {
-            SceneHelper::sharedSceneHelper()->setServerIsDown(true);
+            /* refactoring */
+            SceneHelper::sharedSceneHelper()->setSocketState(SOCKET_SERVER_IS_DOWN);
+            // before
+//            SceneHelper::sharedSceneHelper()->setServerIsDown(true);
+            /**/
             ZBarInterface* zbar = ZBarInterface::sharedZBarInterface();
             zbar->stopDownLoad();
         }
@@ -444,9 +469,15 @@ void    callback_cb( const char* action,const char* info,const char* data,bool i
         //data 是文件名字
         //进入这里说名指定的文件下载成功
         printf("==%s 下载成功\n",data);
-
-		SceneHelper::sharedSceneHelper()->setDownLoadFinished(true);
+		
+        /* refactoring */
+        SceneHelper::sharedSceneHelper()->setDownLoadState(DOWNLOADED_FINISHED);
+        // before
+        /*
+        SceneHelper::sharedSceneHelper()->setDownLoadFinished(true);
 		SceneHelper::sharedSceneHelper()->setDownloading(false);
+         */
+        /**/
     }
     else
     {
@@ -502,7 +533,11 @@ void ZBarInterface::DownLoadZip(const char* zip, const char*version, const char*
     htp->setTimeOut(30);
     htp->addDownloadRequest((char*)zip,"down",NULL);
 	
-	SceneHelper::sharedSceneHelper()->setDownloading(true);
+    /* refactoring */
+    SceneHelper::sharedSceneHelper()->setDownLoadState(DOWNLOADING);
+    // before
+//	SceneHelper::sharedSceneHelper()->setDownloading(true);
+    /**/
 }
 
 
@@ -595,51 +630,24 @@ bool ZBarInterface::isConnected()
 
 int ZBarInterface::CreateConnect(const char* ip, int port)
 {
-    /*
-    std::string msg = "[INFO URL@http://192.168.203.93/Package.zip PROJNAME@projectName WIDTH@960 HEIGHT@640 ]";
-    
-    NSString* temp = [NSString stringWithUTF8String:msg.c_str()];
-    
-    NSRange leftBracketRange = [temp rangeOfString:@"["];
-    NSRange rightBracketRange = [temp rangeOfString:@"]"];
-    
-    NSString* intercept = [temp substringWithRange:NSMakeRange(leftBracketRange.location + 1,
-                                                               rightBracketRange.location - 1 - leftBracketRange.location)];
-    
-    NSArray* array =[intercept componentsSeparatedByString:NSLocalizedString(@" ", nil)];
-    
-    const int count = [array count];
-    NSString* data[count];
-    const char* c_data[count];
-    NSString* tag = [[NSString alloc]initWithString:@"@"];
-    for (int i = 1; i < count - 1; i++)
+    /* refactoring */
+    SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+    if (sceneHelper->getSocketState() == SOCKET_SERVER_IS_DOWN)
     {
-        NSString* value = [array objectAtIndex:i];
-        NSRange range = [value rangeOfString:tag];
-        int location = range.location;
-        data[i] = [value substringFromIndex:(location + 1)];
-        c_data[i] = "";
-        printf("before c_data[i] = %s\n", c_data[i]);
-        c_data[i] = [data[i] UTF8String];
-        printf("after c_data[i] = %s\n", c_data[i]);
+        sceneHelper->setSocketState(SOCKET_NONE);
+        CHttp* http = CHttp::getSingletonPtr();
+        http->setDownLoadRequestCount(0);
     }
-    ZBarInterface::sharedZBarInterface()->DownLoadZip(c_data[1], "", c_data[2], c_data[3], c_data[4]);
-    */
-    
-    
-    
-    
-//    /*
+    // before
+    /*
     if (SceneHelper::sharedSceneHelper()->isServerIsDown())
     {
         SceneHelper::sharedSceneHelper()->setServerIsDown(false);
         CHttp* http = CHttp::getSingletonPtr();
         http->setDownLoadRequestCount(0);
     }
-    if (SceneHelper::sharedSceneHelper()->isLoginEnabled())
-    {
-        SceneHelper::sharedSceneHelper()->setWaitDownLoadStart(true);
-    }
+     */
+    /**/
     
     ZBarInterfaceIOS* ios = [ZBarInterfaceIOS sharedInstance];
     NSString* nsIP = [NSString stringWithUTF8String:ip];
@@ -672,10 +680,8 @@ int ZBarInterface::CreateConnect(const char* ip, int port)
         default:
             break;
     }
-     return value;
-//     */
     
-//    return -1;
+    return value;
 }
 
 void ZBarInterface::DisConnect()
@@ -718,9 +724,17 @@ void ZBarInterface::stopDownLoad()
     CHttp * htp = CHttp::getSingletonPtr();
     htp->stopRequest();
     htp->setLocalFileLen(0);
-    ZBarInterface::sharedZBarInterface()->CleanPath();
+    CleanPath();
+    SceneHelper::sharedSceneHelper()->setHaveResources(false);
+    /* refactoring */
+    SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
+    sceneHelper->setDownLoadState(DOWNLOAD_STOP);
+    // before
+    /*
     SceneHelper::sharedSceneHelper()->setWaitDownLoadStart(false);
     SceneHelper::sharedSceneHelper()->setDownloading(false);
+     */
+    /**/
 }
 /**/
 

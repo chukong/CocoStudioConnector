@@ -20,6 +20,9 @@
 		37CC7462186A708500D7DEBF /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37CC7461186A708500D7DEBF /* libzbar.a */; };
 		37CC7465186A70A000D7DEBF /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37CC7463186A70A000D7DEBF /* libcurl.a */; };
 		37CC7466186A70A000D7DEBF /* libwebp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37CC7464186A70A000D7DEBF /* libwebp.a */; };
+		37CC7482186A8BE100D7DEBF /* acts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37CC747D186A8BE100D7DEBF /* acts.cpp */; };
+		37CC7483186A8BE100D7DEBF /* cons.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37CC747F186A8BE100D7DEBF /* cons.cpp */; };
+		37CC7487186A8CEF00D7DEBF /* ColliderRectDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37CC7485186A8CEF00D7DEBF /* ColliderRectDrawer.cpp */; };
 		380BB60F1850817D00A79FAA /* x_alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 380BB60E1850817D00A79FAA /* x_alt.png */; };
 		380BB611185081E200A79FAA /* x_alt_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 380BB610185081E200A79FAA /* x_alt_pressed.png */; };
 		3817F279184F13F60070C1A4 /* green_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 3817F278184F13F60070C1A4 /* green_edit.png */; };
@@ -343,6 +346,13 @@
 		37CC7461186A708500D7DEBF /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzbar.a; path = ../ZBarSDK/libzbar.a; sourceTree = SOURCE_ROOT; };
 		37CC7463186A70A000D7DEBF /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = "../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries/libcurl.a"; sourceTree = SOURCE_ROOT; };
 		37CC7464186A70A000D7DEBF /* libwebp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebp.a; path = "../../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries/libwebp.a"; sourceTree = SOURCE_ROOT; };
+		37CC747D186A8BE100D7DEBF /* acts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = acts.cpp; sourceTree = "<group>"; };
+		37CC747E186A8BE100D7DEBF /* acts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = acts.h; sourceTree = "<group>"; };
+		37CC747F186A8BE100D7DEBF /* cons.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cons.cpp; sourceTree = "<group>"; };
+		37CC7480186A8BE100D7DEBF /* cons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cons.h; sourceTree = "<group>"; };
+		37CC7481186A8BE100D7DEBF /* EventDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDef.h; sourceTree = "<group>"; };
+		37CC7485186A8CEF00D7DEBF /* ColliderRectDrawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColliderRectDrawer.cpp; path = ../Classes/ColliderRectDrawer.cpp; sourceTree = "<group>"; };
+		37CC7486186A8CEF00D7DEBF /* ColliderRectDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColliderRectDrawer.h; path = ../Classes/ColliderRectDrawer.h; sourceTree = "<group>"; };
 		380BB60E1850817D00A79FAA /* x_alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_alt.png; sourceTree = "<group>"; };
 		380BB610185081E200A79FAA /* x_alt_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_alt_pressed.png; sourceTree = "<group>"; };
 		3817F278184F13F60070C1A4 /* green_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_edit.png; sourceTree = "<group>"; };
@@ -974,8 +984,11 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				37CC747C186A8BE100D7DEBF /* trigger */,
 				F8A6CEB6181F57AF00048552 /* SceneRender.cpp */,
 				F8A6CEB7181F57AF00048552 /* SceneRender.h */,
+				37CC7485186A8CEF00D7DEBF /* ColliderRectDrawer.cpp */,
+				37CC7486186A8CEF00D7DEBF /* ColliderRectDrawer.h */,
 				1AFAF8B316D35DE700DB1158 /* AppDelegate.mm */,
 				1AFAF8B416D35DE700DB1158 /* AppDelegate.h */,
 				418546971821553D005803C2 /* ZBarViewController.h */,
@@ -1049,6 +1062,19 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		37CC747C186A8BE100D7DEBF /* trigger */ = {
+			isa = PBXGroup;
+			children = (
+				37CC747D186A8BE100D7DEBF /* acts.cpp */,
+				37CC747E186A8BE100D7DEBF /* acts.h */,
+				37CC747F186A8BE100D7DEBF /* cons.cpp */,
+				37CC7480186A8BE100D7DEBF /* cons.h */,
+				37CC7481186A8BE100D7DEBF /* EventDef.h */,
+			);
+			name = trigger;
+			path = ../Classes/trigger;
 			sourceTree = "<group>";
 		};
 		382148101869311200402788 /* Products */ = {
@@ -2350,6 +2376,7 @@
 				382153FB1869351400402788 /* CCSkeletonAnimation.cpp in Sources */,
 				3821493E1869318A00402788 /* b2Island.cpp in Sources */,
 				38214AD7186931A800402788 /* cpSimpleMotor.c in Sources */,
+				37CC7487186A8CEF00D7DEBF /* ColliderRectDrawer.cpp in Sources */,
 				382149481869318A00402788 /* b2PolygonAndCircleContact.cpp in Sources */,
 				382152EB1869351400402788 /* CCTransformHelp.cpp in Sources */,
 				1AFAF8B716D35DE700DB1158 /* AppDelegate.mm in Sources */,
@@ -2364,6 +2391,7 @@
 				382153091869351400402788 /* UITextField.cpp in Sources */,
 				1AFCDA8216D4A25900906EA6 /* RootViewController.mm in Sources */,
 				382152F41869351400402788 /* UIWidget.cpp in Sources */,
+				37CC7482186A8BE100D7DEBF /* acts.cpp in Sources */,
 				382152E31869351400402788 /* CCDisplayFactory.cpp in Sources */,
 				38214ADC186931A800402788 /* cpBBTree.c in Sources */,
 				382152C21869351300402788 /* CCBSequenceProperty.cpp in Sources */,
@@ -2437,6 +2465,7 @@
 				38214ADF186931A800402788 /* cpHashSet.c in Sources */,
 				382153F61869351400402788 /* Attachment.cpp in Sources */,
 				382154041869351400402788 /* SlotData.cpp in Sources */,
+				37CC7483186A8BE100D7DEBF /* cons.cpp in Sources */,
 				38214CDC1869324200402788 /* CDOpenALSupport.m in Sources */,
 				3821531F1869351400402788 /* CCEditBoxImplIOS.mm in Sources */,
 				382152FF1869351400402788 /* UIScrollView.cpp in Sources */,

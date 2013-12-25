@@ -1,10 +1,4 @@
-//
-//  SceneHelper.cpp
-//  CCSPreviewer
-//
-//  Created by jiang xiaohua on 13-11-13.
-//
-//
+
 
 #include "SceneHelper.h"
 #include "FileInfo.h"
@@ -19,21 +13,46 @@ SVitLock g_lock;
 SceneHelper* SceneHelper::s_SceneRender = NULL;
 
 SceneHelper::SceneHelper()
+/* refactoring */
+//: m_pHelloWorldScene(NULL)
+/**/
+: m_pRenderScene(NULL)
+, m_nNowRunning(DEFAULT)
+, m_bHaveResouces(false)
+, m_bDownLoading(false)
+, m_bDownLoadFinished(false)
+, m_bWaitDownLoadStart(false)
+, m_bLoginEnabled(false)
+, m_bServerIsDown(false)
+, m_eHelloWorldState(NORMAL)
+, m_eSocketState(SOCKET_NONE)
+, m_eDownLoadState(DOWNLOAD_NONE)
+, m_nDownLoadByte(0)
+, m_strAction("")
+, m_strInfo("")
+, m_nErrortype(-1)
+, m_nRepose(-1)
+, m_bPrint(false)
+, m_OldSize(CCSizeZero)
+, m_bTouchedRender(false)
 {
-	m_nNowRunning = -1;
-	m_bDownLoading = false;
-//	m_bHaveResouces = false;
-	VitCreateLock(g_lock);
-	m_bDownLoadFinished = false;
-    /* pipu */
-    m_bLoginEnabled = false;
-    m_bWaitDownLoadStart = false;
-    m_bServerIsDown = false;
-    /**/
-	m_bPrint = false;
-	m_nDownLoadByte = 0;
-	m_bHaveResouces = false;
-	m_bTouchedRender = false;
+    VitCreateLock(g_lock);
+    /*
+     m_nNowRunning = DEFAULT;
+     m_bDownLoading = false;
+     //	m_bHaveResouces = false;
+     VitCreateLock(g_lock);
+     m_bDownLoadFinished = false;
+     //==== pipu ===//
+     m_bLoginEnabled = false;
+     m_bWaitDownLoadStart = false;
+     m_bServerIsDown = false;
+     //
+     m_bPrint = false;
+     m_nDownLoadByte = 0;
+     m_bHaveResouces = false;
+     m_bTouchedRender = false;
+     */
 }
 SceneHelper::~SceneHelper()
 {

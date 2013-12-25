@@ -41,12 +41,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
                                       , kResolutionShowAll);
 
 	
+    SceneHelper::sharedSceneHelper()->setNowRunning(HELLOWORLD);
     // create a scene. it's an autorelease object
-    CCScene *pScene = HelloWorld::scene();
-	SceneHelper::sharedSceneHelper()->setHelloWorld(pScene);
-	SceneHelper::sharedSceneHelper()->setNowRunning(HELLOWORLD);
+    /* refactoring */
+    pDirector->runWithScene(HelloWorld::scene());
+    // before
+    /*
+    SceneHelper::sharedSceneHelper()->setHelloWorld(pScene);
     // run
     pDirector->runWithScene(pScene);
+     */
+    /**/
 	pDirector->setDisplayStats(false);
 //	CCSize size = CCDirector::sharedDirector()->getVisibleSize();
 	SceneHelper::sharedSceneHelper()->setOldSize( size.width, size.height);

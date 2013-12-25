@@ -6,6 +6,7 @@
 #import "ZBarSDK.h"
 #import "ZBarViewController.h"
 #import "ZBarInterface.h"
+#include "SceneHelper.h"
 
 
 @implementation AppController
@@ -126,6 +127,7 @@ static AppDelegate s_sharedApplication;
     if ([temp isEqualToString:storeIP] == NO)
     {
         ZBarInterface::sharedZBarInterface()->DisConnect();
+        SceneHelper::sharedSceneHelper()->setSocketState(SOCKET_DISCONNECT);
     }
     
     NSArray* array = [temp componentsSeparatedByString:NSLocalizedString(@":", nil)];
@@ -139,6 +141,7 @@ static AppDelegate s_sharedApplication;
     int port = [nsPort intValue];
     NSLog(@"ip = %s", ip);
     NSLog(@"port = %i", port);
+    NSLog(@"temp = %@", temp);
     ZBarInterface::sharedZBarInterface()->setIP([temp UTF8String]);
     ZBarInterface::sharedZBarInterface()->CreateConnect(ip, port);
     
