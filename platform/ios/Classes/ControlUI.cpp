@@ -332,7 +332,7 @@ void ControlUI::pick(CCObject* sender, cocos2d::extension::TouchEventType type)
          */
         /**/
         /* pipu */
-//        int result = ZBarInterface::sharedZBarInterface()->CreateConnect("192.168.22.195", 6094);
+//        int result = ZBarInterface::sharedZBarInterface()->CreateConnect("192.168.22.195", 5339);
 //        CCLOG("result = %d", result);
         ZBarInterface::sharedZBarInterface()->pick();
 //		ZBarInterface::sharedZBarInterface()->DownLoadZip("http://192.168.22.179:1195/Package.zip", "version", "FightScene.json", "960", "640");
