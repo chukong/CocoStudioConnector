@@ -29,9 +29,7 @@ public:
     // implement the "static node()" method manually
     CREATE_FUNC(HelloWorld);
     
-    /* pipu */
     long long getCurrentTime();    
-    /**/
 };
 
 #endif // __HELLOWORLD_SCENE_H__
