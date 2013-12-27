@@ -61,7 +61,6 @@ void SceneRender::initSceneLayer(const char* filename)
 	
 	pScene = SceneReader::sharedSceneReader()->createNodeWithSceneFile(filename);
 	pLayer->addChild(pScene);
-	aa = ActionManager::shareManager()->playActionByName("startMenu_1.json", "Animation1");
     
     sendEvent(TRIGGEREVENT_INITSCENE);
 	this->schedule(schedule_selector(SceneRender::gameLogic));
@@ -114,8 +113,9 @@ void SceneRender::onExit()
 	}
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseAllEffects();
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
-	CCLayer::onExit();
     sendEvent(TRIGGEREVENT_LEAVESCENE);
+    cocos2d::extension::SceneReader::sharedSceneReader()->purgeSceneReader();
+    CCLayer::onExit();
 }
 
 
