@@ -223,7 +223,6 @@ void HelloWorld::onEnter()
 void HelloWorld::onExit()
 {
 	cocos2d::extension::CCArmatureDataManager::purge();
-    cocos2d::extension::SceneReader::sharedSceneReader()->purgeSceneReader();
 	cocos2d::extension::ActionManager::shareManager()->purgeActionManager();
 
 	unscheduleUpdate();
@@ -261,7 +260,7 @@ void HelloWorld::Render(CCObject* sender, cocos2d::extension::TouchEventType typ
 		SceneHelper::sharedSceneHelper()->setTouchRender(true);
 		SceneRender* pScene = new SceneRender(FileInfo::sharedFileInfo()->getFilename());
 		unscheduleAllSelectors();
-        CCDirector::sharedDirector()->replaceScene((CCScene*)pScene);
+        CCDirector::sharedDirector()->replaceScene((CCScene*)pScene); 
 		SceneHelper::sharedSceneHelper()->setNowRunning(RENDER);
 	}
 }
