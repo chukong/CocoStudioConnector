@@ -136,7 +136,6 @@ public:
 	void saveConfig();
 	void loadConfig();
 	void saveSerchPath();
-	void cleanResources();
 	
 	void setLastError(const char* action, const char* info, int errortype, int repose);
 	bool getPrint() { return m_bPrint; }
@@ -156,9 +155,6 @@ public:
 	bool isTouchRender() { return m_bTouchedRender; }
     
 protected:
-    /* refactoring */
-//	cocos2d::CCScene* m_pHelloWorldScene;
-    /**/
 	SceneRender* m_pRenderScene;
 	static SceneHelper* s_SceneRender;
 	SceneNowRunning   m_nNowRunning;

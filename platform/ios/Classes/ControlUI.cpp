@@ -23,8 +23,7 @@ bool ControlUI::init()
 {
     CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();
     CCSize size = pEGLView->getFrameSize();
-//    CCSize size = CCDirector::sharedDirector()->getVisibleSize();
-    
+        
     m_GUILayer = UILayer::create();
     
     uiDownloadText = UILabel::create();
@@ -173,25 +172,8 @@ bool ControlUI::init()
     pCloseButton->loadTextures("CloseNormal.png","CloseNormal.png","CloseSelected.png");
     pCloseButton->setPosition(ccp(size.width - 70,50));
     pCloseButton->addTouchEventListener(this,toucheventselector(ControlUI::menuCloseCallback));
-//    pCloseButton->setScale(2.0);
 	pCloseButton->setFontSize(18);
     m_GUILayer->addWidget(pCloseButton);
-	
-//	m_pSearchButton->setBright(false);
-//	m_pSearchButton->setTouchEnabled(false);
-//
-//    UIButton* sendMsg = UIButton::create();
-//    sendMsg->setTouchEnabled(true);
-//    sendMsg->loadTextures("ui/buttonNormal.png","ui/buttonPress.png","");
-//    sendMsg->setText("Update");
-//    sendMsg->setPosition(ccp(500,300));
-//    sendMsg->addPushDownEvent(this,coco_pushselector(ControlUI::send));
-//    sendMsg->setScale(2.0);
-//    m_GUILayer->addWidget(sendMsg);
-    
-    
-
-
 	addChild(m_GUILayer,2);
 	return true;
 }
@@ -231,7 +213,6 @@ void ControlUI::enableRenderButton()
 	}
 }
 
-/* pipu */
 void ControlUI::disableResetButton()
 {
     if (m_pCleanButton->isBright())
@@ -291,21 +272,14 @@ void ControlUI::setIP(const char *ip)
 
 void ControlUI::setProgress(float downloaded)
 {
-//	setTitle("Started to downloading!");
 	CCSize size = CCDirector::sharedDirector()->getVisibleSize();
 	uiDownloadText->setPosition(ccp(size.width/2 - 150, size.height - uiDownloadText->getSize().height * 2));
 	char temp[128];memset(temp, 0x00, sizeof(temp));
 	sprintf(temp, "DownLoading: %d kb", (int)downloaded/1024);
 	setTitle(temp);
-    
-    /* pipu */
     double total = SceneHelper::sharedSceneHelper()->getDownLoadTotal();
-//    CCLOG("total = %f", total);
-//    CCLOG("downloaded = %f", downloaded);
     int percent = ceil(downloaded / total * 100);
-//    CCLOG("percent = %d", percent);
     setLoadingBarPercent(percent);
-    /**/
 }
 void ControlUI::setTitle(const char* text)
 {
@@ -318,78 +292,39 @@ void ControlUI::pick(CCObject* sender, cocos2d::extension::TouchEventType type)
 {
 	if(type == TOUCH_EVENT_ENDED)
 	{
-        /* refactoring */
         if (SceneHelper::sharedSceneHelper()->getDownLoadState() == DOWNLOADING)
         {
             return;
         }
-        // before
-        /*
-		if (SceneHelper::sharedSceneHelper()->isDownloading())
-		{
-			return;
-		}
-         */
-        /**/
-        /* pipu */
-//        int result = ZBarInterface::sharedZBarInterface()->CreateConnect("192.168.22.195", 6094);
-//        CCLOG("result = %d", result);
         ZBarInterface::sharedZBarInterface()->pick();
-//		ZBarInterface::sharedZBarInterface()->DownLoadZip("http://192.168.22.179:1195/Package.zip", "version", "FightScene.json", "960", "640");
 	}
 }
 
 void ControlUI::Clean(CCObject* sender, cocos2d::extension::TouchEventType type)
 {
-	/* refactoring */
     if (SceneHelper::sharedSceneHelper()->getDownLoadState() == DOWNLOADING)
     {
         return;
     }
-    // before
-    /*
-     if (SceneHelper::sharedSceneHelper()->isDownloading())
-     {
-     return;
-     }
-     */
-    /**/
 	if(type == TOUCH_EVENT_ENDED)
 	{
-//		SceneHelper::sharedSceneHelper()->cleanResources();
 		SceneHelper::sharedSceneHelper()->setHaveResources(false);
-
-//		FileDownload::sharedFileDownload()->reset();
-		
 		ZBarInterface::sharedZBarInterface()->ReadPath();
-		CCLog("-----------------------------------");
 		ZBarInterface::sharedZBarInterface()->CleanPath();
-		CCLog("-----------------------------------");
 		ZBarInterface::sharedZBarInterface()->ReadPath();
 	
 	}
 }
 
-/* pipu */
 void ControlUI::ipEvent(CCObject *sender, TouchEventType type)
 {
     if (type == TOUCH_EVENT_ENDED)
     {
-        /* refactoring */
         SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
         if (sceneHelper->getDownLoadState() == DOWNLOADING)
         {
             return;
         }
-        // before
-        /*
-         if (SceneHelper::sharedSceneHelper()->isDownloading())
-         {
-         return;
-         }
-         */
-        /**/
-        
         m_pIP_layout->setVisible(!m_pIP_layout->isVisible());
         CCObject* obj = NULL;
         CCARRAY_FOREACH(m_pIP_layout->getChildren(), obj)
@@ -409,9 +344,7 @@ void ControlUI::ipEvent(CCObject *sender, TouchEventType type)
         m_pIP_button->setTouchEnabled(false);
         m_pIP_button->setBright(false);
         
-        /* refactoring */
         sceneHelper->setHelloWorldState(INPUT_IP);
-        /**/
     }
 }
 
@@ -436,13 +369,8 @@ void ControlUI::okEvent(CCObject *sender, TouchEventType type)
         m_pIP_button->setTouchEnabled(true);
         m_pIP_button->setBright(true);
         
-        /* refactoring */
         SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
         sceneHelper->setHelloWorldState(NORMAL);
-        /**/
-        
-        // "192.168.203.93"
-        // 48173
         ZBarInterface* zbar = ZBarInterface::sharedZBarInterface();
         std::string value = m_pIP_editbox->getText();
         
@@ -473,10 +401,8 @@ void ControlUI::cancelEvent(CCObject *sender, TouchEventType type)
     {
         m_pIP_layout->setVisible(false);
         
-        /* refactoring */
         SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();
         sceneHelper->setHelloWorldState(NORMAL);
-        /**/
     }
 }
 
@@ -487,7 +413,6 @@ void ControlUI::removeEvent(CCObject *sender, TouchEventType type)
         m_pIP_editbox->setText("");
     }
 }
-/**/
 
 void ControlUI::menuCloseCallback(CCObject* sender, cocos2d::extension::TouchEventType type)
 {

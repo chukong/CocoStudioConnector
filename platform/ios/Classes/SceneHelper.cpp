@@ -13,9 +13,6 @@ SVitLock g_lock;
 SceneHelper* SceneHelper::s_SceneRender = NULL;
 
 SceneHelper::SceneHelper()
-/* refactoring */
-//: m_pHelloWorldScene(NULL)
-/**/
 : m_pRenderScene(NULL)
 , m_nNowRunning(DEFAULT)
 , m_bHaveResouces(false)
@@ -37,22 +34,6 @@ SceneHelper::SceneHelper()
 , m_bTouchedRender(false)
 {
     VitCreateLock(g_lock);
-    /*
-     m_nNowRunning = DEFAULT;
-     m_bDownLoading = false;
-     //	m_bHaveResouces = false;
-     VitCreateLock(g_lock);
-     m_bDownLoadFinished = false;
-     //==== pipu ===//
-     m_bLoginEnabled = false;
-     m_bWaitDownLoadStart = false;
-     m_bServerIsDown = false;
-     //
-     m_bPrint = false;
-     m_nDownLoadByte = 0;
-     m_bHaveResouces = false;
-     m_bTouchedRender = false;
-     */
 }
 SceneHelper::~SceneHelper()
 {
@@ -88,31 +69,11 @@ void SceneHelper::loadConfig()
 void SceneHelper::saveSerchPath()
 {
 	std::string pathToSave = CCFileUtils::sharedFileUtils()->getWritablePath();
-//    pathToSave += "tmpdir";
 	std::vector<std::string> searchPaths = CCFileUtils::sharedFileUtils()->getSearchPaths();
 	searchPaths.insert(searchPaths.begin(), pathToSave);
 	CCFileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
 }
-void SceneHelper::cleanResources()
-{
-//	SceneHelper::sharedSceneHelper()->setHaveResources(false);
-//	std::string path = cocos2d::CCFileUtils::sharedFileUtils()->getWritablePath();
-	
-//	ZBarInterface::sharedZBarInterface()->CleanPath(path.c_str());
-	// Remove downloaded files
-//#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-//    std::string command = "rm -r ";
-    // Path may include space.
-//    command += "\"" + path + "*\"";
-//    system(command.c_str());
-//	ZBarInterface::sharedZBarInterface()->CleanPath(path.c_str());
-//#else
-//    string command = "rd /s /q ";
-//    // Path may include space.
-//    command += "\"" + pathToSave + "\"";
-//    system(command.c_str());
-//#endif
-}
+
 void SceneHelper::setLastError(const char* action, const char* info, int errortype, int repose)
 {
 	m_strAction = action;
@@ -121,10 +82,9 @@ void SceneHelper::setLastError(const char* action, const char* info, int errorty
 	m_nRepose = repose;
 }
 
-/* pipu */
 const double SceneHelper::getDownLoadTotal() const
 {
     CHttp * htp = CHttp::getSingletonPtr();
     return htp->getDownLoadTotal();
 }
-/**/
+

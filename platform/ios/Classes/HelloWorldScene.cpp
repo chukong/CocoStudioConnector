@@ -37,22 +37,7 @@ bool HelloWorld::init()
         return false;
     }
 	
-	CCSprite*sp;
-	CCSize size = CCDirector::sharedDirector()->getVisibleSize();
-//	if(size.width == 1136)
-//	{
-		sp = CCSprite::create("background.png");
-//	}
-//	else if(size.width == 1024)
-//	{
-//		sp = CCSprite::create("Default-Landscape~ipad.png");
-//	}
-//	else
-	{
-//		sp = CCSprite::create("background960_640.png");
-	}
-	
-	
+	CCSprite *sp = CCSprite::create("background.png");
 	
 	sp->setPosition(ccp(480,320));
 	addChild(sp);
@@ -67,33 +52,6 @@ bool HelloWorld::init()
 }
 void HelloWorld::update(float delta)
 {
-	
-    /* refactoring */
-    /*
-	CHttp * htp = CHttp::getSingletonPtr();
-	
-	Http_Lock(htp->m_errorHttpLock);
-	for( int i = 0; i < htp->m_vecError.size();i++ )
-	{
-		htp->m_mainVecError.push_back(htp->m_vecError[i]);
-	}
-	Http_UnLock(htp->m_errorHttpLock);
-	htp->m_vecError.clear();
-	
-	for( int i = 0; i < htp->m_mainVecError.size(); i++ )
-	{
-		const char* str = htp->m_mainVecError[i].action.c_str();
-		if( str )
-		{
-			CHttp * htp = CHttp::getSingletonPtr();
-	//		htp->addDownloadRequest("http://192.168.22.179:1195/Package.zip", "down",NULL);
-			htp->addDownloadRequest(FileInfo::sharedFileInfo()->getURL(),"down",NULL);
-		}
-	}
-     */
-    /**/
-    
-    /* refactoring */
     SceneHelper* sceneHelper = SceneHelper::sharedSceneHelper();    
     
     switch (sceneHelper->getHelloWorldState())
@@ -221,10 +179,6 @@ void HelloWorld::update(float delta)
                     {
                         std::string str = "ProjectName Error!";
                         m_pGUI->setTitle(str.c_str());
-//                        char temp[128];memset(temp, 0x00, sizeof(temp));
-//                        sprintf(temp, "Have not resources!" );
-//                        SceneHelper::sharedSceneHelper()->setLastError("", "", 10000, 0);
-//                        SceneHelper::sharedSceneHelper()->setPrint(true);
                         return;
                     }
                     sceneHelper->setDownLoadByte(0);
@@ -249,130 +203,6 @@ void HelloWorld::update(float delta)
         default:
             break;
     }
-    /**/
-	
-    /*
-    // pipu //
-    m_pGUI->getConnectImage()->setVisible(ZBarInterface::sharedZBarInterface()->isConnected());
-    m_pGUI->getDisconnectImage()->setVisible(!ZBarInterface::sharedZBarInterface()->isConnected());
-    //
-    
-	if (SceneHelper::sharedSceneHelper()->isDownLoadFinished())
-	{
-//		CCDirector::sharedDirector()->
-		
-		SceneHelper::sharedSceneHelper()->setHaveResources(true);
-		SceneHelper::sharedSceneHelper()->setDownLoadFinished(false);
-		uncompress();
-		m_pGUI->setTitle("DownLoad Finished");
-		SceneHelper::sharedSceneHelper()->saveSerchPath();
-		SceneHelper::sharedSceneHelper()->saveConfig();
-		if (strcmp(FileInfo::sharedFileInfo()->getFilename(), "") == 0)
-		{
-			std::string str = "ProjectName Error!";
-			m_pGUI->setTitle(str.c_str());
-//			char temp[128];memset(temp, 0x00, sizeof(temp));
-//			sprintf(temp, "Have not resources!" );
-//			SceneHelper::sharedSceneHelper()->setLastError("", "", 10000, 0);
-//			SceneHelper::sharedSceneHelper()->setPrint(true);
-			return;
-		}
-		SceneRender* pScene = new SceneRender(FileInfo::sharedFileInfo()->getFilename());
-		CCDirector::sharedDirector()->replaceScene((CCScene*)pScene);
-		SceneHelper::sharedSceneHelper()->setNowRunning(RENDER);
-		SceneHelper::sharedSceneHelper()->setDownloading(false);
-//		SceneHelper::sharedSceneHelper()->setHaveResources(true);
-		SceneHelper::sharedSceneHelper()->setDownLoadByte(0);
-	}
-	else if(SceneHelper::sharedSceneHelper()->isDownloading())
-	{
-        // pipu //
-        m_pGUI->setIP(ZBarInterface::sharedZBarInterface()->getIP());
-        m_pGUI->setLoadingBarVisible(true);
-        //
-		m_pGUI->setProgress(SceneHelper::sharedSceneHelper()->getDownLoadByte());
-        // pipu //
-        m_pGUI->disableConnectButton();
-        m_pGUI->disableRenderButton();
-        m_pGUI->disableResetButton();
-        m_pGUI->disableIPButton();
-        //
-	}
-    //=== pipu ===//
-    else if (SceneHelper::sharedSceneHelper()->isWaitDownLoadStart())
-    {
-        m_pGUI->setDownLoadTextVisible(true);
-        m_pGUI->setTitle("Waiting for pushing down start of scene editor");
-    }
-    //
-    else if (SceneHelper::sharedSceneHelper()->isServerIsDown())
-    {
-        ZBarInterface* zbar = ZBarInterface::sharedZBarInterface();
-        if (zbar->isConnected())
-        {
-            zbar->DisConnect();
-        }
-        m_pGUI->setTitle("Server is down, connect server agian");
-        m_pGUI->setLoadingBarVisible(false);
-        m_pGUI->enableConnectButton();
-        m_pGUI->enableResetButton();
-        m_pGUI->enableRenderButton();
-        m_pGUI->enableIPButton();
-    }
-    else
-    {
-        // pipu //
-        if (!m_pGUI->isInputLayoutVisible())
-        {
-            m_pGUI->setTitle("Connect server or render if app can render");
-            m_pGUI->setLoadingBarVisible(false);
-            m_pGUI->enableConnectButton();
-            m_pGUI->enableResetButton();
-            m_pGUI->enableRenderButton();
-            m_pGUI->enableIPButton();
-        }
-        //
-    }
-	if(SceneHelper::sharedSceneHelper()->getPrint())
-	{
-		SceneHelper::sharedSceneHelper()->setPrint(false);
-		SceneHelper::sharedSceneHelper()->setDownloading(false);
-		
-		char temp[512];memset(temp, 0x00, sizeof(temp));
-		if (SceneHelper::sharedSceneHelper()->getErrorType() == 28)
-		{
-			sprintf(temp," TimeOut，Maybe disconnect！Errotype: %d",SceneHelper::sharedSceneHelper()->getErrorType());
-		}
-		else if(SceneHelper::sharedSceneHelper()->getErrorType() == 10000)
-		{
-			sprintf(temp,"Have not resources!");
-		}
-		else
-		{
-			sprintf(temp,"Action: %s; Info: %s; Errotype: %d", SceneHelper::sharedSceneHelper()->getAction(), SceneHelper::sharedSceneHelper()->getInfo(),
-													SceneHelper::sharedSceneHelper()->getErrorType());
-		}
-		m_pGUI->setTitle(temp);
-		
-	}
-	
-	if(SceneHelper::sharedSceneHelper()->isHaveResources())
-	{
-        // pipu
-        if (!m_pGUI->isInputLayoutVisible()
-            && !SceneHelper::sharedSceneHelper()->isDownloading())
-        {
-            m_pGUI->enableRenderButton();
-        }
-        // before
-//        m_pGUI->enableRenderButton();
-        //
-	}
-	else
-	{
-		m_pGUI->disableRenderButton();
-	}
-     */
 }
 void HelloWorld::onEnter()
 {
@@ -383,20 +213,17 @@ void HelloWorld::onEnter()
 	CCLayer::onEnter();
 	scheduleUpdate();
     
-    /* pipu */
     m_pGUI->setTitle("Connect server or render if app can render");
     m_pGUI->setLoadingBarPercent(0);
     m_pGUI->enableConnectButton();
     m_pGUI->enableResetButton();
     m_pGUI->enableRenderButton();
     m_pGUI->enableIPButton();
-    /**/
 }
 void HelloWorld::onExit()
 {
 	cocos2d::extension::CCArmatureDataManager::purge();
     cocos2d::extension::SceneReader::sharedSceneReader()->purgeSceneReader();
-//    UIHelper::purgeUIHelper();
 	cocos2d::extension::ActionManager::shareManager()->purgeActionManager();
 
 	unscheduleUpdate();
@@ -416,33 +243,19 @@ void HelloWorld::Render(CCObject* sender, cocos2d::extension::TouchEventType typ
 		}
 		if(!SceneHelper::sharedSceneHelper()->isHaveResources())
 		{
-//			m_pGUI->setTitle("Cannot Find Resouces!");
-//			((HelloWorld*)SceneHelper::sharedSceneHelper()->getHelloWorld())->m_pGUI->setTitle("Cannot Find Resouces!");
 			return;
 		}
         
-        /* pipu */
         cocos2d::extension::UIButton* render = static_cast<cocos2d::extension::UIButton*>(sender);
         render->setBright(false);
         render->setTouchEnabled(false);
-        /**/
-		//加载工程名称
-		SceneHelper::sharedSceneHelper()->loadConfig();
+        SceneHelper::sharedSceneHelper()->loadConfig();
 		SceneHelper::sharedSceneHelper()->saveSerchPath();
 		
 		if (strcmp(FileInfo::sharedFileInfo()->getFilename(), "") == 0)
 		{
-            /* pipu */
             render->setBright(false);
             render->setTouchEnabled(true);
-            /**/
-            
-//			std::string str = "Have not resources!";
-//			m_pGUI->setTitle(str.c_str());
-//			char temp[128];memset(temp, 0x00, sizeof(temp));
-//			sprintf(temp, "Have not resources!" );
-//			SceneHelper::sharedSceneHelper()->setLastError("", "", 10000, 0);
-//			SceneHelper::sharedSceneHelper()->setPrint(true);
 			return;
 		}
 		SceneHelper::sharedSceneHelper()->setTouchRender(true);
@@ -522,9 +335,7 @@ bool HelloWorld::uncompress()
 			if (fileName[filenameLength-1] != '/')
 			{
 				int pos = fullPath.find_last_of("/");
-//				printf("pos : %d\n", pos);
 				std::string realPath = fullPath.substr(0, pos);
-//				printf("path: %s\n", realPath.c_str());
 				if (!createDirectory(realPath.c_str()))
 				{
 					CCLOG("can not create directory %s", fullPath.c_str());
@@ -614,7 +425,6 @@ bool HelloWorld::createDirectory(const char *path)
 #endif
 }
 
-/* pipu */
 long long HelloWorld::getCurrentTime()
 {
     struct cc_timeval tv;
@@ -624,4 +434,3 @@ long long HelloWorld::getCurrentTime()
     return time;
 
 }
-/**/
