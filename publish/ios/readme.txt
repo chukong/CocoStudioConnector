@@ -1,0 +1,1 @@
+CocoViewer needs ios6 and above version
