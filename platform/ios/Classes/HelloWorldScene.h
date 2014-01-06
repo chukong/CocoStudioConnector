@@ -16,7 +16,7 @@ public:
 		
 	virtual void update(float delta);
 	
-	void Render(CCObject* sender, cocos2d::extension::TouchEventType type);
+	void Render(CCObject* sender, ::cocos2d::gui::TouchEventType type);
 	
 	virtual void onEnter();
     virtual void onExit();
