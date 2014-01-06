@@ -8,6 +8,7 @@
 #include "FileInfo.h"
 using namespace cocos2d;
 using namespace cocos2d::extension;
+using namespace cocos2d::gui;
 
 
 ControlUI::ControlUI()
@@ -21,6 +22,7 @@ ControlUI::~ControlUI()
 }
 bool ControlUI::init()
 {
+
     CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();
     CCSize size = pEGLView->getFrameSize();
         
@@ -42,10 +44,10 @@ bool ControlUI::init()
     m_pConnectButton = UIButton::create();
     m_pConnectButton->setTouchEnabled(true);
     m_pConnectButton->loadTextures("buttonNormal.png","buttonPress.png","buttonDisble.png");
-    m_pConnectButton->setText("Connect");
+    m_pConnectButton->setTitleText("Connect");
     m_pConnectButton->addTouchEventListener(this,toucheventselector(ControlUI::pick));
     m_pConnectButton->setScale(2.0);
-	m_pConnectButton->setFontSize(18);
+	m_pConnectButton->setTitleFontSize(18);
 	cocos2d::CCSize connect_size = m_pConnectButton->getContentSize();
     m_pConnectButton->setPosition(ccp(size.width / 6, size.height - connect_size.height * 4));
 	m_GUILayer->addWidget(m_pConnectButton);
@@ -54,21 +56,21 @@ bool ControlUI::init()
     m_pRenderButton->setName("name render");
     m_pRenderButton->setTouchEnabled(true);
     m_pRenderButton->loadTextures("buttonNormal.png","buttonPress.png","buttonDisble.png");
-    m_pRenderButton->setText("Render");
+    m_pRenderButton->setTitleText("Render");
     CCSize render_size = m_pRenderButton->getSize();
     m_pRenderButton->setPosition(ccp(size.width - size.width / 4.5, size.height - render_size.height * 4));
     m_pRenderButton->addTouchEventListener(this,toucheventselector(HelloWorld::Render));
     m_pRenderButton->setScale(2.0);
-	m_pRenderButton->setFontSize(18);
+	m_pRenderButton->setTitleFontSize(18);
     m_GUILayer->addWidget(m_pRenderButton);
 	
 	m_pCleanButton = UIButton::create();
     m_pCleanButton->setTouchEnabled(true);
     m_pCleanButton->loadTextures("buttonNormal.png","buttonPress.png","buttonDisble.png");
-    m_pCleanButton->setText("Reset");
+    m_pCleanButton->setTitleText("Reset");
     m_pCleanButton->addTouchEventListener(this,toucheventselector(ControlUI::Clean));
     m_pCleanButton->setScale(2.0);
-	m_pCleanButton->setFontSize(18);
+	m_pCleanButton->setTitleFontSize(18);
 	cocos2d::CCSize reset_size = m_pCleanButton->getContentSize();
     m_pCleanButton->setPosition(ccp(size.width - size.width / 4.5, reset_size.height * 6));
     m_GUILayer->addWidget(m_pCleanButton);
@@ -77,10 +79,10 @@ bool ControlUI::init()
     m_pIP_button = UIButton::create();
     m_pIP_button->setTouchEnabled(true);
     m_pIP_button->loadTextures("buttonNormal.png","buttonPress.png","buttonDisble.png");
-    m_pIP_button->setText("Input IP");
+    m_pIP_button->setTitleText("Input IP");
     m_pIP_button->addTouchEventListener(this,toucheventselector(ControlUI::ipEvent));
     m_pIP_button->setScale(2.0);
-	m_pIP_button->setFontSize(18);
+	m_pIP_button->setTitleFontSize(18);
     CCSize ip_size = m_pIP_button->getSize();
     m_pIP_button->setPosition(ccp(size.width / 6, ip_size.height * 6));
     m_GUILayer->addWidget(m_pIP_button);
@@ -106,10 +108,10 @@ bool ControlUI::init()
     m_pIP_Ok_button = UIButton::create();
     m_pIP_Ok_button->setTouchEnabled(true);
     m_pIP_Ok_button->loadTextures("buttonNormal.png","buttonPress.png","buttonDisble.png");
-    m_pIP_Ok_button->setText("Ok");
+    m_pIP_Ok_button->setTitleText("Ok");
     m_pIP_Ok_button->addTouchEventListener(this,toucheventselector(ControlUI::okEvent));
     m_pIP_Ok_button->setScale(1.5);
-	m_pIP_Ok_button->setFontSize(18);
+	m_pIP_Ok_button->setTitleFontSize(18);
     CCSize ok_size = m_pIP_Ok_button->getSize();
     m_pIP_Ok_button->setPosition(ccp(layout_size.width / 2 - (ok_size.width + ok_size.width / 8),
                                      ok_size.height + ok_size.height / 2));
@@ -118,10 +120,10 @@ bool ControlUI::init()
     m_pIP_Cancel_button = UIButton::create();
     m_pIP_Cancel_button->setTouchEnabled(true);
     m_pIP_Cancel_button->loadTextures("buttonNormal.png","buttonPress.png","buttonDisble.png");
-    m_pIP_Cancel_button->setText("Cancel");
+    m_pIP_Cancel_button->setTitleText("Cancel");
     m_pIP_Cancel_button->addTouchEventListener(this,toucheventselector(ControlUI::cancelEvent));
     m_pIP_Cancel_button->setScale(1.5);
-	m_pIP_Cancel_button->setFontSize(18);
+	m_pIP_Cancel_button->setTitleFontSize(18);
     CCSize cancel_size = m_pIP_Cancel_button->getSize();
     m_pIP_Cancel_button->setPosition(ccp(layout_size.width / 2 + (cancel_size.width + cancel_size.width / 8),
                                           cancel_size.height + cancel_size.height / 2));
@@ -140,13 +142,13 @@ bool ControlUI::init()
     m_pIP_editbox->setInputMode(kEditBoxInputModeNumeric);
     m_pIP_editbox->setReturnType(kKeyboardReturnTypeDone);
     CCSize editbox_size = m_pIP_editbox->getContentSize();
-    m_pIP_layout->addRenderer(m_pIP_editbox, 0);
+    m_pIP_layout->addNode(m_pIP_editbox);
     
     m_pIP_Remove_button = UIButton::create();
     m_pIP_Remove_button->setTouchEnabled(true);
     m_pIP_Remove_button->loadTextures("x_alt_pressed.png","x_alt.png","");
     m_pIP_Remove_button->addTouchEventListener(this,toucheventselector(ControlUI::removeEvent));
-	m_pIP_Remove_button->setFontSize(18);
+	m_pIP_Remove_button->setTitleFontSize(18);
     CCSize remove_size = m_pIP_Remove_button->getSize();
     m_pIP_Remove_button->setPosition(ccp(m_pIP_editbox->getPosition().x + editbox_size.width / 2 + remove_size.width,
                                      m_pIP_editbox->getPosition().y));
@@ -172,7 +174,7 @@ bool ControlUI::init()
     pCloseButton->loadTextures("CloseNormal.png","CloseNormal.png","CloseSelected.png");
     pCloseButton->setPosition(ccp(size.width - 70,50));
     pCloseButton->addTouchEventListener(this,toucheventselector(ControlUI::menuCloseCallback));
-	pCloseButton->setFontSize(18);
+	pCloseButton->setTitleFontSize(18);
     m_GUILayer->addWidget(pCloseButton);
 	addChild(m_GUILayer,2);
 	return true;
@@ -288,7 +290,7 @@ void ControlUI::setTitle(const char* text)
 	int len = uiDownloadText->getStringLength();
 	uiDownloadText->setPosition(ccp(visible.width / 2 - len * 9, visible.height - uiDownloadText->getSize().height * 2));
 }
-void ControlUI::pick(CCObject* sender, cocos2d::extension::TouchEventType type)
+void ControlUI::pick(CCObject* sender, TouchEventType type)
 {
 	if(type == TOUCH_EVENT_ENDED)
 	{
@@ -300,7 +302,7 @@ void ControlUI::pick(CCObject* sender, cocos2d::extension::TouchEventType type)
 	}
 }
 
-void ControlUI::Clean(CCObject* sender, cocos2d::extension::TouchEventType type)
+void ControlUI::Clean(CCObject* sender, cocos2d::gui::TouchEventType type)
 {
     if (SceneHelper::sharedSceneHelper()->getDownLoadState() == DOWNLOADING)
     {
@@ -414,7 +416,7 @@ void ControlUI::removeEvent(CCObject *sender, TouchEventType type)
     }
 }
 
-void ControlUI::menuCloseCallback(CCObject* sender, cocos2d::extension::TouchEventType type)
+void ControlUI::menuCloseCallback(CCObject* sender, cocos2d::gui::TouchEventType type)
 {
 	if(type == TOUCH_EVENT_ENDED)
 	{

@@ -39,17 +39,17 @@ public:
 	CREATE_FUNC(ControlUI)
 	void setProgress(float downloaded);
 	void setTitle(const char*);
-	void Clean(CCObject* sender, cocos2d::extension::TouchEventType type);
+	void Clean(CCObject* sender, cocos2d::gui::TouchEventType type);
 	//ZBar
-	void pick(CCObject* sender, cocos2d::extension::TouchEventType type);
-    void ipEvent(CCObject* sender, cocos2d::extension::TouchEventType type);
-    void okEvent(CCObject* sender, cocos2d::extension::TouchEventType type);
-    void cancelEvent(CCObject* sender, cocos2d::extension::TouchEventType type);
-    void removeEvent(CCObject* sender, cocos2d::extension::TouchEventType type);
-    cocos2d::extension::UIImageView* getConnectImage() const { return m_pConnect_image; };
-    cocos2d::extension::UIImageView* getDisconnectImage() const { return m_pDisconnect_image; };
-	void menuCloseCallback(CCObject* sender, cocos2d::extension::TouchEventType type);
-	cocos2d::extension::UILabel* getTitle(){ return uiDownloadText; }
+	void pick(CCObject* sender, cocos2d::gui::TouchEventType type);
+    void ipEvent(CCObject* sender, cocos2d::gui::TouchEventType type);
+    void okEvent(CCObject* sender, cocos2d::gui::TouchEventType type);
+    void cancelEvent(CCObject* sender, cocos2d::gui::TouchEventType type);
+    void removeEvent(CCObject* sender, cocos2d::gui::TouchEventType type);
+    cocos2d::gui::UIImageView* getConnectImage() const { return m_pConnect_image; };
+    cocos2d::gui::UIImageView* getDisconnectImage() const { return m_pDisconnect_image; };
+	void menuCloseCallback(CCObject* sender, cocos2d::gui::TouchEventType type);
+	cocos2d::gui::UILabel* getTitle(){ return uiDownloadText; }
 
 	void disableConnectButton();
 	void enableConnectButton();
@@ -67,21 +67,21 @@ public:
     
 protected:
 	
-	cocos2d::extension::UILoadingBar* uiLoadingBar;
-	cocos2d::extension::UILabel* uiDownloadText;
-	cocos2d::extension::UIButton* m_pConnectButton;
-	cocos2d::extension::UIButton* m_pCleanButton;
-	cocos2d::extension::UIButton* m_pRenderButton;
-    cocos2d::extension::UIButton* m_pIP_button;
-    cocos2d::extension::UILayout* m_pIP_layout;
-    cocos2d::extension::UILabel* m_pIP_Title_label;
-    cocos2d::extension::UIButton* m_pIP_Ok_button;
-    cocos2d::extension::UIButton* m_pIP_Cancel_button;
+	cocos2d::gui::UILoadingBar* uiLoadingBar;
+	cocos2d::gui::UILabel* uiDownloadText;
+	cocos2d::gui::UIButton* m_pConnectButton;
+	cocos2d::gui::UIButton* m_pCleanButton;
+	cocos2d::gui::UIButton* m_pRenderButton;
+    cocos2d::gui::UIButton* m_pIP_button;
+    cocos2d::gui::UILayout* m_pIP_layout;
+    cocos2d::gui::UILabel* m_pIP_Title_label;
+    cocos2d::gui::UIButton* m_pIP_Ok_button;
+    cocos2d::gui::UIButton* m_pIP_Cancel_button;
     cocos2d::extension::CCEditBox* m_pIP_editbox;
-    cocos2d::extension::UIButton* m_pIP_Remove_button;
-    cocos2d::extension::UIImageView* m_pConnect_image;
-    cocos2d::extension::UIImageView* m_pDisconnect_image;
-	cocos2d::extension::UILayer* m_GUILayer;
+    cocos2d::gui::UIButton* m_pIP_Remove_button;
+    cocos2d::gui::UIImageView* m_pConnect_image;
+    cocos2d::gui::UIImageView* m_pDisconnect_image;
+	cocos2d::gui::UILayer* m_GUILayer;
 };
 
 #endif

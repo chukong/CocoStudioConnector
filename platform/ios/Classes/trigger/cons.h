@@ -39,7 +39,7 @@ public:
      virtual void removeAll();
 	 void animationEvent(cocos2d::extension::CCArmature *armature, cocos2d::extension::MovementEventType movementType, const char *movementID);
 private:
-	 int _nTag;   
+	 int _nTag;
 	 std::string _comName;
 	 std::string _aniname;
 	 int _nState;

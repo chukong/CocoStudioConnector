@@ -223,14 +223,14 @@ void HelloWorld::onEnter()
 void HelloWorld::onExit()
 {
 	cocos2d::extension::CCArmatureDataManager::purge();
-	cocos2d::extension::ActionManager::shareManager()->purgeActionManager();
+	cocos2d::extension::ActionManager::shareManager()->purge();
 
 	unscheduleUpdate();
 	CCLayer::onExit();
 }
-void HelloWorld::Render(CCObject* sender, cocos2d::extension::TouchEventType type)
+void HelloWorld::Render(CCObject* sender, ::cocos2d::gui::TouchEventType type)
 {
-	if (type == cocos2d::extension::TOUCH_EVENT_ENDED)
+	if (type == ::cocos2d::gui::TOUCH_EVENT_ENDED)
 	{
 		if(SceneHelper::sharedSceneHelper()->isTouchRender())
 		{
@@ -245,7 +245,7 @@ void HelloWorld::Render(CCObject* sender, cocos2d::extension::TouchEventType typ
 			return;
 		}
         
-        cocos2d::extension::UIButton* render = static_cast<cocos2d::extension::UIButton*>(sender);
+        ::cocos2d::gui::UIButton* render = static_cast<cocos2d::gui::UIButton*>(sender);
         render->setBright(false);
         render->setTouchEnabled(false);
         SceneHelper::sharedSceneHelper()->loadConfig();

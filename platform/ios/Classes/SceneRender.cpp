@@ -114,7 +114,7 @@ void SceneRender::onExit()
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseAllEffects();
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
     sendEvent(TRIGGEREVENT_LEAVESCENE);
-    cocos2d::extension::SceneReader::sharedSceneReader()->purgeSceneReader();
+    cocos2d::extension::SceneReader::sharedSceneReader()->purge();
     CCLayer::onExit();
 }
 
