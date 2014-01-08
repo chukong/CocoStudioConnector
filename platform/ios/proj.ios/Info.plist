@@ -50,7 +50,7 @@
 		<string>Icon-152.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>chukong.cocostudio.com.CocoReviewer.inhouse</string>
+	<string>chukong.cocostudio.com.CocoReviewer</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
