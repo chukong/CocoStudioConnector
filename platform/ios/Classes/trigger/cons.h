@@ -80,5 +80,31 @@ private:
 	bool _bVisible;
 };
 
+class RectangleCollisionTest : public cocos2d::extension::BaseTriggerCondition
+{
+	DECLARE_CLASS_INFO
+public:
+	RectangleCollisionTest(void);
+	virtual ~RectangleCollisionTest(void);
+
+	virtual bool init();
+	virtual bool detect();
+	virtual void serialize(const rapidjson::Value &val);
+	virtual void removeAll();
+private:
+	bool isRectCollision(cocos2d::CCRect rect1, cocos2d::CCRect rect2);
+	cocos2d::CCNode* getNode(cocos2d::CCNode *pNode, std::string comName);
+	void split(const std::string& s,const std::string& delim,std::vector<int>* ret);
+private:
+	int _nTag_A;
+	std::string _strComName_A;
+	int _nAOffsetX;
+	int _nAOffsetY;
+	std::vector<int> _vecTags;
+	std::string _strComName_B;
+	int _nBOffsetX;
+	int _nBOffsetY;
+
+};
 
 #endif

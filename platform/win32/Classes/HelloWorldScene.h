@@ -35,7 +35,9 @@ public:
 
 	// gameLogic
 	void gameLogic(float dt);
-    // implement the "static node()" method manually
+	// set random seed
+	void setRandomSeed();
+	// implement the "static node()" method manually
     CREATE_FUNC(HelloWorld);
 };
 

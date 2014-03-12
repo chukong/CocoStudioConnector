@@ -57,6 +57,7 @@ private:
 	float _fDuration;
 	cocos2d::CCPoint _pos;
 	bool _bReverse;
+	bool _bIsRepeatForever;
 };
 
 
@@ -204,5 +205,183 @@ private:
 	std::string _ComName;
 	std::string _aniname;
 };
+
+
+class SequenceMoveTo : public cocos2d::extension::BaseTriggerAction
+{
+    DECLARE_CLASS_INFO
+public:
+     SequenceMoveTo(void);
+     virtual ~SequenceMoveTo(void);
+
+     virtual bool init();
+     virtual void done();
+	 virtual void serialize(const rapidjson::Value &val);
+     virtual void removeAll();
+private:
+	int _nTag;
+	cocos2d::CCPoint _ccpEndPos;
+	float  _fEndDur;
+	cocos2d::CCPoint _ccpStartPos;
+	float  _fStartDur;
+	bool _bIsRepeatForever;
+	float  _fDelayTime;
+};
+
+class JumpAction : public cocos2d::extension::BaseTriggerAction
+{
+	DECLARE_CLASS_INFO
+public:
+	JumpAction(void);
+	virtual ~JumpAction(void);
+
+	virtual bool init();
+	virtual void done();
+	virtual void serialize(const rapidjson::Value &val);
+	virtual void removeAll();
+private:
+	int   _nTag;
+	float _fRiseHeight;
+	float _fRiseTime;
+	float _fJumpDelayTime;
+	float _fRotationTo;
+};
+
+
+class FallAction : public cocos2d::extension::BaseTriggerAction
+{
+	DECLARE_CLASS_INFO
+public:
+	FallAction(void);
+	virtual ~FallAction(void);
+
+	virtual bool init();
+	virtual void done();
+	virtual void serialize(const rapidjson::Value &val);
+	virtual void removeAll();
+private:
+	int   _nTag;
+	float _fFallTimeParam;
+	float _fRotationTo;
+	float _fFallTo;
+};
+
+
+class ChangeDoubleAttribute : public cocos2d::extension::BaseTriggerAction
+{
+	DECLARE_CLASS_INFO
+public:
+	ChangeDoubleAttribute(void);
+	virtual ~ChangeDoubleAttribute(void);
+
+	virtual bool init();
+	virtual void done();
+	virtual void serialize(const rapidjson::Value &val);
+	virtual void removeAll();
+private:
+	int   _nTag;
+	std::string _Key;
+	float _fValue;
+	int _nType;
+	int _nLimit;
+};
+
+
+class AddAccToPositionY : public cocos2d::extension::BaseTriggerAction
+{
+	DECLARE_CLASS_INFO
+public:
+	AddAccToPositionY(void);
+	virtual ~AddAccToPositionY(void);
+
+	virtual bool init();
+	virtual void done();
+	virtual void serialize(const rapidjson::Value &val);
+	virtual void removeAll();
+private:
+	int   _nTag;
+	std::string _comName;
+	std::string _key;
+	float _fAcceleration;
+};
+
+
+
+class SequenceMoveToAndChangePositionY : public cocos2d::extension::BaseTriggerAction
+{
+	DECLARE_CLASS_INFO
+public:
+	SequenceMoveToAndChangePositionY(void);
+	virtual ~SequenceMoveToAndChangePositionY(void);
+
+	virtual bool init();
+	virtual void done();
+	virtual void serialize(const rapidjson::Value &val);
+	virtual void removeAll();
+private:
+	int getRandNum(int min, int max);
+	void actionOver(cocos2d::CCNode* pSender, void* data);
+private:
+	int _nTag;
+	cocos2d::CCPoint _ccpEndPos;
+	float  _fEndDur;
+	cocos2d::CCPoint _ccpStartPos;
+	float  _fStartDur;
+	float  _fDelayTime;
+	int    _nMaxPositionY;
+	int    _nMinPositionY;
+};
+
+class StopAllActions : public cocos2d::extension::BaseTriggerAction
+{
+	DECLARE_CLASS_INFO
+public:
+	StopAllActions(void);
+	virtual ~StopAllActions(void);
+
+	virtual bool init();
+	virtual void done();
+	virtual void serialize(const rapidjson::Value &val);
+	virtual void removeAll();
+private:
+	void split(const std::string& s,const std::string& delim,std::vector<int>* ret);
+private:
+	std::vector<int> _vecTags;
+};
+
+
+class SetNodeVisible : public cocos2d::extension::BaseTriggerAction
+{
+	DECLARE_CLASS_INFO
+public:
+	SetNodeVisible(void);
+	virtual ~SetNodeVisible(void);
+
+	virtual bool init();
+	virtual void done();
+	virtual void serialize(const rapidjson::Value &val);
+	virtual void removeAll();
+private:
+	int _nTag;
+	bool _bShow;
+};
+
+
+class PlayUIAnimation : public cocos2d::extension::BaseTriggerAction
+{
+	DECLARE_CLASS_INFO
+public:
+	PlayUIAnimation(void);
+	virtual ~PlayUIAnimation(void);
+
+	virtual bool init();
+	virtual void done();
+	virtual void serialize(const rapidjson::Value &val);
+	virtual void removeAll();
+private:
+	std::string _uiJsonName;
+	std::string _animaitionName;
+};
+
 
 #endif

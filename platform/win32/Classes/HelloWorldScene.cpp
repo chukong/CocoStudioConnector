@@ -43,7 +43,7 @@ bool HelloWorld::init()
     {
         return false;
     }
-   
+    setRandomSeed();
 	cocos2d::extension::SceneReader::sharedSceneReader()->setTarget(this, callfuncOD_selector(HelloWorld::comCallBack));
 	CCNode *pNode = cocos2d::extension::SceneReader::sharedSceneReader()->createNodeWithSceneFile(ReadJSHelper::Instance()->GetJsonPath().c_str());
 	if (pNode != NULL)
@@ -107,4 +107,12 @@ void HelloWorld::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
 void HelloWorld::gameLogic(float dt)
 {
 	sendEvent(TRIGGEREVENT_UPDATESCENE);
+}
+
+void HelloWorld::setRandomSeed()
+{
+	cc_timeval psv;    
+	CCTime::gettimeofdayCocos2d(&psv, NULL);    
+	unsigned long int rand_seed = psv.tv_sec*1000 + psv.tv_usec/1000;    
+	srand(rand_seed); 
 }
