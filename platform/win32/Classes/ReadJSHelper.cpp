@@ -75,15 +75,36 @@ void ReadJSHelper::Read()
     m_WinSize.width = atof(width->FirstChild()->Value());
     m_WinSize.height = atof(height->FirstChild()->Value());
     
-    TiXmlElement *Resources = _root->FirstChildElement("Resources");
-    m_Resources.assign(Resources->FirstChild()->Value());
-	m_Resources.append("/");
-	SetCurrentDirectoryA(m_Resources.c_str());
-	cocos2d::CCFileUtils::sharedFileUtils()->addSearchPath(m_Resources.c_str());
-    
-	TiXmlElement *SceneJson = _root->FirstChildElement("Name");
-	m_SceneJson.assign(m_Resources);
-    m_SceneJson.append(SceneJson->FirstChild()->Value());
+    TiXmlElement *resRelativepath = _root->FirstChildElement("ResRelativePath");
+    std::string version2 = "";
+    std::string version1;
+    version1.assign(resRelativepath->FirstChild()->Value());
+    if (version2 != version1)
+    {
+        TiXmlElement *Resources = _root->FirstChildElement("Res");
+        m_Resources.assign(Resources->FirstChild()->Value());
+        SetCurrentDirectoryA(m_Resources.c_str());
+        cocos2d::CCFileUtils::sharedFileUtils()->addSearchPath(m_Resources.c_str());
+        std::string dir(m_Resources);
+
+        TiXmlElement *SceneJson = _root->FirstChildElement("Name");
+        m_SceneJson.assign(m_Resources);
+        m_SceneJson.append("/publish/");
+        m_SceneJson.append(SceneJson->FirstChild()->Value());
+    }
+    else
+    {
+        TiXmlElement *Resources = _root->FirstChildElement("Resources");
+        m_Resources.assign(Resources->FirstChild()->Value());
+        m_Resources.append("/");
+        SetCurrentDirectoryA(m_Resources.c_str());
+        cocos2d::CCFileUtils::sharedFileUtils()->addSearchPath(m_Resources.c_str());
+
+        TiXmlElement *SceneJson = _root->FirstChildElement("Name");
+        m_SceneJson.assign(m_Resources);
+        m_SceneJson.append(SceneJson->FirstChild()->Value());
+    }
+
 	m_SceneJson.append(".json");
   
 }
