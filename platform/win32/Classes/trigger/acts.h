@@ -95,6 +95,7 @@ private:
 	float _fDuration;
 	float _fDeltaAngle;
 	bool _bReverse;
+    bool _bIsRepeatForever;
 };
 
 
@@ -132,7 +133,7 @@ private:
 	float _fDuration;
 	cocos2d::CCPoint _scale;
 	bool _bReverse;
-
+    bool _bIsRepeatForever;
 };
 
 
@@ -170,6 +171,7 @@ private:
 	float _fDuration;
 	cocos2d::CCPoint _skew;
 	bool _bReverse;
+    bool _bIsRepeatForever;
 };
 
 
@@ -202,7 +204,7 @@ public:
 	virtual void removeAll();
 private:
 	int _nTag;
-	std::string _ComName;
+	std::string _comName;
 	std::string _aniname;
 };
 
@@ -261,7 +263,7 @@ public:
 	virtual void removeAll();
 private:
 	int   _nTag;
-	float _fFallTimeParam;
+	float _fFallSpeed;
 	float _fRotationTo;
 	float _fFallTo;
 };
@@ -332,24 +334,6 @@ private:
 	int    _nMinPositionY;
 };
 
-class StopAllActions : public cocos2d::extension::BaseTriggerAction
-{
-	DECLARE_CLASS_INFO
-public:
-	StopAllActions(void);
-	virtual ~StopAllActions(void);
-
-	virtual bool init();
-	virtual void done();
-	virtual void serialize(const rapidjson::Value &val);
-	virtual void removeAll();
-private:
-	void split(const std::string& s,const std::string& delim,std::vector<int>* ret);
-private:
-	std::vector<int> _vecTags;
-};
-
-
 class SetNodeVisible : public cocos2d::extension::BaseTriggerAction
 {
 	DECLARE_CLASS_INFO
@@ -382,6 +366,24 @@ private:
 	std::string _uiJsonName;
 	std::string _animaitionName;
 };
+
+class StopAllActions : public cocos2d::extension::BaseTriggerAction
+{
+    DECLARE_CLASS_INFO
+public:
+    StopAllActions(void);
+    virtual ~StopAllActions(void);
+
+    virtual bool init();
+    virtual void done();
+    virtual void serialize(const rapidjson::Value &val);
+    virtual void removeAll();
+private:
+    void split(const std::string& s,const std::string& delim,std::vector<int>* ret);
+private:
+    std::vector<int> _vecTags;
+};
+
 
 
 #endif

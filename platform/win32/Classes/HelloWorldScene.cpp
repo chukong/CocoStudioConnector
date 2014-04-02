@@ -8,6 +8,7 @@
 
 USING_NS_CC;
 USING_NS_CC_EXT;
+using namespace ui;
 
 CCScene* HelloWorld::scene()
 {
@@ -63,7 +64,13 @@ void HelloWorld::comCallBack(cocos2d::CCObject *tar, void *dict)
 	{
 		return;
 	}
-	CCArmature *pAr = dynamic_cast<CCArmature*>(tar);
+
+	CCComRender *pRender = dynamic_cast<CCComRender*>(tar);
+	if (pRender == NULL)
+	{
+		return;
+	}
+	CCArmature *pAr = dynamic_cast<CCArmature*>(pRender->getNode());
 	if (pAr == NULL)
 	{
 		return;
@@ -83,9 +90,12 @@ void HelloWorld::comCallBack(cocos2d::CCObject *tar, void *dict)
 	drawer->setVisible(true);
 }
 
+static int i = 0;
+
 bool HelloWorld::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
 	sendEvent(TRIGGEREVENT_TOUCHBEGAN);
+
 	return true;
 }
 

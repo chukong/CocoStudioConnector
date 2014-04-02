@@ -287,16 +287,25 @@ bool RectangleCollisionTest::detect()
 	{
 		CCNode *pNodeA = SceneReader::sharedSceneReader()->getNodeByTag(_nTag_A);
 		CC_BREAK_IF(pNodeA == NULL);
-		CCNode *pComNodeA = getNode(pNodeA, _strComName_A);
-		CC_BREAK_IF(pNodeA == NULL);
+        CCNode *pComNodeA = pNodeA;
+        if (SceneReader::sharedSceneReader()->getAttachComponentType() == ATTACH_EMPTY_NODE)
+        {
+            pComNodeA = getNode(pNodeA, _strComName_A);
+        }
+        CC_BREAK_IF(pComNodeA == NULL);
 		for (std::vector<int>::iterator iter = _vecTags.begin(); iter != _vecTags.end(); ++iter)
 		{
 			CCNode *pNodeB = SceneReader::sharedSceneReader()->getNodeByTag(*iter);
 			CC_BREAK_IF(pNodeB == NULL);
-			CCNode *pComNodeB = getNode(pNodeB, _strComName_B);
-			CC_BREAK_IF(pNodeA == NULL);
+            CCNode *pComNodeB = pNodeB;
+            if (SceneReader::sharedSceneReader()->getAttachComponentType() == ATTACH_EMPTY_NODE)
+            {
+                pComNodeB = getNode(pNodeB, _strComName_B);
+                CC_BREAK_IF(pComNodeB == NULL);
+            }
 			CCPoint p1 = pNodeA->getPosition();
-			CCPoint p2 = pNodeB->getParent()->getPosition() + pNodeB->getPosition();
+			CCPoint p2 =  pNodeB->getParent()->getPosition() + pNodeB->getPosition();
+
 			CCRect ARect(p1.x, p1.y, pComNodeA->getContentSize().width + _nAOffsetX, pComNodeA->getContentSize().height + _nAOffsetY);
 			CCRect BRect(p2.x, p2.y, pComNodeB->getContentSize().width + _nBOffsetX, pComNodeB->getContentSize().height + _nBOffsetY);
 			if (isRectCollision(ARect, BRect))
@@ -305,7 +314,6 @@ bool RectangleCollisionTest::detect()
 				return true;
 			}
 		}
-		
 	} while (0);
 	
 	return false;

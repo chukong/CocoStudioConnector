@@ -313,15 +313,22 @@ void TRotateBy::done()
 		CC_BREAK_IF(pNode == NULL);
 		CCActionInterval*  actionBy = CCRotateBy::create(_fDuration, _fDeltaAngle);
 		CC_BREAK_IF(actionBy == NULL);
-		if (_bReverse == true)
-		{
-			CCActionInterval*  actionByBack = actionBy->reverse();
-			pNode->runAction( CCSequence::create(actionBy, actionByBack, NULL));
-		}
-		else
-		{
-			pNode->runAction(actionBy);
-		}
+        if (_bReverse == true)
+        {
+            CCActionInterval*  actionByBack = actionBy->reverse();
+            if (_bIsRepeatForever)
+            {
+                pNode->runAction(CCRepeatForever::create(static_cast<CCSequence *>(CCSequence::create(actionBy, actionByBack,NULL))));  
+            }
+            else
+            {
+                pNode->runAction( CCSequence::create(actionBy, actionByBack, NULL));
+            }
+        }
+        else
+        {
+            pNode->runAction(actionBy);
+        }
 	} while (0);
 }
 
@@ -352,6 +359,11 @@ void TRotateBy::serialize(const rapidjson::Value &val)
 			_bReverse = DICTOOL->getIntValue_json(subDict, "value")!= 0? true:false;
 			continue;
 		}
+        else if (key == "IsRepeatForever")
+        {
+            _bIsRepeatForever = (DICTOOL->getIntValue_json(subDict, "value") == 1);
+            continue;
+        }
 	}
 }
 
@@ -455,15 +467,22 @@ void TScaleBy::done()
 		CC_BREAK_IF(pNode == NULL);
 		CCActionInterval*  actionBy = CCScaleBy::create(_fDuration, _scale.x, _scale.y);
 		CC_BREAK_IF(actionBy == NULL);
-		if (_bReverse == true)
-		{
-			CCActionInterval*  actionByBack = actionBy->reverse();
-			pNode->runAction( CCSequence::create(actionBy, actionByBack, NULL));
-		}
-		else
-		{
-			pNode->runAction(actionBy);
-		}
+        if (_bReverse == true)
+        {
+            CCActionInterval*  actionByBack = actionBy->reverse();
+            if (_bIsRepeatForever)
+            {
+                pNode->runAction(CCRepeatForever::create(static_cast<CCSequence *>(CCSequence::create(actionBy, actionByBack,NULL))));  
+            }
+            else
+            {
+                pNode->runAction( CCSequence::create(actionBy, actionByBack, NULL));
+            }
+        }
+        else
+        {
+            pNode->runAction(actionBy);
+        }
 	} while (0);
 }
 
@@ -499,6 +518,11 @@ void TScaleBy::serialize(const rapidjson::Value &val)
 			_bReverse = DICTOOL->getIntValue_json(subDict, "value")!= 0? true:false;
 			continue;
 		}
+        else if (key == "IsRepeatForever")
+        {
+            _bIsRepeatForever = (DICTOOL->getIntValue_json(subDict, "value") == 1);
+            continue;
+        }
 	}
 }
 
@@ -601,15 +625,22 @@ void TSkewBy::done()
 		CC_BREAK_IF(pNode == NULL);
 		CCActionInterval*  actionBy = CCSkewBy::create(_fDuration, _skew.x, _skew.y);
 		CC_BREAK_IF(actionBy == NULL);
-		if (_bReverse == true)
-		{
-			CCActionInterval*  actionByBack = actionBy->reverse();
-			pNode->runAction( CCSequence::create(actionBy, actionByBack, NULL));
-		}
-		else
-		{
-			pNode->runAction(actionBy);
-		}
+        if (_bReverse == true)
+        {
+            CCActionInterval*  actionByBack = actionBy->reverse();
+            if (_bIsRepeatForever)
+            {
+                pNode->runAction(CCRepeatForever::create(static_cast<CCSequence *>(CCSequence::create(actionBy, actionByBack,NULL))));  
+            }
+            else
+            {
+                pNode->runAction( CCSequence::create(actionBy, actionByBack, NULL));
+            }
+        }
+        else
+        {
+            pNode->runAction(actionBy);
+        }
 	} while (0);
 }
 
@@ -644,6 +675,11 @@ void TSkewBy::serialize(const rapidjson::Value &val)
 		{
 			_bReverse = DICTOOL->getIntValue_json(subDict, "value")!= 0? true:false;
 		}
+        else if (key == "IsRepeatForever")
+        {
+            _bIsRepeatForever = (DICTOOL->getIntValue_json(subDict, "value") == 1);
+            continue;
+        }
 	}
 }
 
@@ -739,7 +775,7 @@ void ArmaturePlayAction::done()
 	{
 		CCNode *pNode = SceneReader::sharedSceneReader()->getNodeByTag(_nTag);
 		CC_BREAK_IF(pNode == NULL);
-		CCComRender *pRender = (CCComRender*)(pNode->getComponent(_ComName.c_str()));
+		CCComRender *pRender = (CCComRender*)(pNode->getComponent(_comName.c_str()));
 		CC_BREAK_IF(pRender == NULL);
 		CCArmature *pAr = (CCArmature *)(pRender->getNode());
 		CC_BREAK_IF(pAr == NULL);
@@ -761,7 +797,7 @@ void ArmaturePlayAction::serialize(const rapidjson::Value &val)
 		}
 		else if (key == "componentName")
 		{
-			_ComName = DICTOOL->getStringValue_json(subDict, "value");
+			_comName = DICTOOL->getStringValue_json(subDict, "value");
 			continue;
 		}
 		else if (key == "AnimationName")
@@ -978,7 +1014,7 @@ void FallAction::done()
 		pNode->stopAllActions();    
 		float postionX = pNode->getPositionX();  
 		float postionY = pNode->getPositionY();  
-		float time = postionY / _fFallTimeParam;  
+		float time = postionY / _fFallSpeed;  
 		pNode->runAction(CCSequence::create( 
 			CCSpawn::create(CCRotateTo::create(time, _fRotationTo), CCMoveTo::create(time, ccp(postionX, _fFallTo)), NULL), NULL)  
 			);  
@@ -1000,7 +1036,7 @@ void FallAction::serialize(const rapidjson::Value &val)
 		}
 		else if (key == "FallTimeParam")
 		{
-			_fFallTimeParam = DICTOOL->getFloatValue_json(subDict, "value");
+			_fFallSpeed = DICTOOL->getFloatValue_json(subDict, "value");
 			continue;
 		}
 		else if (key == "RotationTo")
@@ -1307,73 +1343,6 @@ void SequenceMoveToAndChangePositionY::actionOver(CCNode* pSender, void* data)
 	return;
 }
 
-IMPLEMENT_CLASS_INFO(StopAllActions)
-StopAllActions::StopAllActions(void)
-{
-}
-
-StopAllActions::~StopAllActions(void)
-{
-}
-
-bool StopAllActions::init()
-{
-	return true;
-}
-
-void StopAllActions::done()
-{
-	do 
-	{
-		for (std::vector<int>::iterator iter = _vecTags.begin(); iter != _vecTags.end(); ++iter)
-		{
-			CCNode *pNode = SceneReader::sharedSceneReader()->getNodeByTag(*iter);
-			if (pNode == NULL)
-			{
-				continue;;
-			}
-			pNode->stopAllActions();
-		}
-	} while (0);
-}
-
-void StopAllActions::serialize(const rapidjson::Value &val)
-{
-	int count = DICTOOL->getArrayCount_json(val, "dataitems");
-	for (int i = 0; i < count; ++i)
-	{
-		const rapidjson::Value &subDict = DICTOOL->getSubDictionary_json(val, "dataitems", i);
-		std::string key = DICTOOL->getStringValue_json(subDict, "key");
-		if (key == "Tags")
-		{
-			std::string strTags = DICTOOL->getStringValue_json(subDict, "value");
-			split(strTags, ",", &_vecTags);
-			continue;
-		}
-	}
-}
-
-void StopAllActions::removeAll()
-{
-	CCLOG("StopAllActions::removeAll");
-}
-
-void StopAllActions::split(const std::string& s,const std::string& delim,std::vector<int>* ret)
-{
-	size_t last = 0;
-	size_t index=s.find_first_of(delim,last);
-	while (index!=std::string::npos)
-	{
-		ret->push_back(atoi(s.substr(last,index-last).c_str()));
-		last=index+1;
-		index=s.find_first_of(delim,last);
-	}
-	if (index-last>0)
-	{
-		ret->push_back(atoi(s.substr(last,index-last).c_str()));
-	}
-}
-
 IMPLEMENT_CLASS_INFO(SetNodeVisible)
 SetNodeVisible::SetNodeVisible(void)
 {
@@ -1470,6 +1439,72 @@ void PlayUIAnimation::removeAll()
 }
 
 
+IMPLEMENT_CLASS_INFO(StopAllActions)
+    StopAllActions::StopAllActions(void)
+{
+}
+
+StopAllActions::~StopAllActions(void)
+{
+}
+
+bool StopAllActions::init()
+{
+    return true;
+}
+
+void StopAllActions::done()
+{
+    do 
+    {
+        for (std::vector<int>::iterator iter = _vecTags.begin(); iter != _vecTags.end(); ++iter)
+        {
+            CCNode *pNode = SceneReader::sharedSceneReader()->getNodeByTag(*iter);
+            if (pNode == NULL)
+            {
+                continue;;
+            }
+            pNode->stopAllActions();
+        }
+    } while (0);
+}
+
+void StopAllActions::serialize(const rapidjson::Value &val)
+{
+    int count = DICTOOL->getArrayCount_json(val, "dataitems");
+    for (int i = 0; i < count; ++i)
+    {
+        const rapidjson::Value &subDict = DICTOOL->getSubDictionary_json(val, "dataitems", i);
+        std::string key = DICTOOL->getStringValue_json(subDict, "key");
+        if (key == "Tags")
+        {
+            std::string strTags = DICTOOL->getStringValue_json(subDict, "value");
+            split(strTags, ",", &_vecTags);
+            continue;
+        }
+    }
+}
+
+void StopAllActions::removeAll()
+{
+    CCLOG("StopAllActions::removeAll");
+}
+
+void StopAllActions::split(const std::string& s,const std::string& delim,std::vector<int>* ret)
+{
+    size_t last = 0;
+    size_t index=s.find_first_of(delim,last);
+    while (index!=std::string::npos)
+    {
+        ret->push_back(atoi(s.substr(last,index-last).c_str()));
+        last=index+1;
+        index=s.find_first_of(delim,last);
+    }
+    if (index-last>0)
+    {
+        ret->push_back(atoi(s.substr(last,index-last).c_str()));
+    }
+}
 
 
 
